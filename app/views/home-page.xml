@@ -1,0 +1,60 @@
+<Page navigatingTo="onNavigatingTo" loaded="onLoaded" class="page">
+  <ActionBar title="SJC Forum" class="navy-bar">
+    <NavigationButton text="Profile" icon="" tap="onGoToProfile" />
+    <ActionItem text="Logout" tap="onLogout" ios.position="right" />
+  </ActionBar>
+
+  <GridLayout rows="auto, *, auto">
+    <!-- Category Filter -->
+    <ScrollView row="0" orientation="horizontal" class="bg-white" padding="8">
+      <StackLayout orientation="horizontal">
+        <Button text="All" tap="onFilterCategory" class="category-filter-btn active" id="filter-all" />
+        <Button text="Questions" tap="onFilterCategory" class="category-filter-btn" id="filter-question" />
+        <Button text="Ideas" tap="onFilterCategory" class="category-filter-btn" id="filter-idea" />
+        <Button text="Announcements" tap="onFilterCategory" class="category-filter-btn" id="filter-announcement" />
+        <Button text="General" tap="onFilterCategory" class="category-filter-btn" id="filter-general" />
+      </StackLayout>
+    </ScrollView>
+
+    <!-- Thread List -->
+    <ListView row="1" items="{{ threads }}" itemTap="onThreadTap" class="thread-list" separatorColor="#e9ecef">
+      <ListView.itemTemplate>
+        <StackLayout class="thread-card" tap="onThreadTap">
+          <!-- Category & Time Row -->
+          <GridLayout columns="auto, *, auto" rows="auto">
+            <Label col="0" text="{{ category }}" class="category-badge" textTransform="capitalize" />
+            <Label col="2" text="{{ timeAgo }}" class="thread-meta" />
+          </GridLayout>
+
+          <!-- Title -->
+          <Label text="{{ title }}" class="thread-title" textWrap="true" margin-top="8" />
+
+          <!-- Message Preview -->
+          <Label text="{{ messagePreview }}" class="thread-message" textWrap="true" />
+
+          <!-- Author & Stats Row -->
+          <GridLayout columns="auto, *, auto, auto" rows="auto" margin-top="8">
+            <Label col="0" text="{{ authorName }}" class="thread-author" font-size="13" />
+            <Label col="2" text="{{ commentCountText }}" class="thread-meta" margin-right="16" />
+            <Label col="3" text="{{ reactionText }}" class="thread-meta" />
+          </GridLayout>
+        </StackLayout>
+      </ListView.itemTemplate>
+    </ListView>
+
+    <!-- Empty State -->
+    <StackLayout row="1" id="emptyState" visibility="collapsed" class="empty-state">
+      <Label text="&#xf0e6;" class="empty-icon" />
+      <Label text="No threads yet" class="empty-title" />
+      <Label text="Be the first to start a discussion!" class="empty-text" />
+    </StackLayout>
+
+    <!-- Loading -->
+    <ActivityIndicator row="1" id="loading" busy="false" class="loading-spinner" />
+
+    <!-- FAB - New Thread -->
+    <GridLayout row="2" rows="*" columns="*">
+      <Button text="+" tap="onNewThread" class="fab" horizontalAlignment="right" verticalAlignment="bottom" margin="16" rowSpan="2" />
+    </GridLayout>
+  </GridLayout>
+</Page>

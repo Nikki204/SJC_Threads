@@ -1,0 +1,18 @@
+<Page navigatingTo="onNavigatingTo" class="page">
+  <ScrollView>
+    <StackLayout class="auth-container">
+      <Label text="SJC" class="auth-title" />
+      <Label text="Student Discussion Forum" class="auth-subtitle" />
+
+      <TextField id="email" hint="Email" keyboardType="email" class="auth-input" autocorrect="false" autocapitalizationType="none" />
+      <TextField id="password" hint="Password" secure="true" class="auth-input" />
+
+      <Button text="Sign In" tap="onSignIn" class="auth-btn" />
+      <Button text="Create Account" tap="onGoToRegister" class="btn-secondary" style="background-color: transparent; color: #bcccdc; border-color: #bcccdc; border-width: 1;" />
+
+      <Label text="Forgot password?" tap="onForgotPassword" class="auth-link" />
+      <ActivityIndicator id="loading" busy="false" color="#bcccdc" margin-top="16" />
+      <Label id="error" text="" color="#ff6b6b" font-size="13" text-wrap="true" margin-top="8" text-align="center" />
+    </StackLayout>
+  </ScrollView>
+</Page>

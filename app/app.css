@@ -1,0 +1,543 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SJC Discussion App - Navy Blue & White Theme */
+
+/* Color System */
+:root {
+  --navy-50: #f0f4f8;
+  --navy-100: #d9e2ec;
+  --navy-200: #bcccdc;
+  --navy-300: #9fb3c8;
+  --navy-400: #829ab1;
+  --navy-500: #627d98;
+  --navy-600: #486581;
+  --navy-700: #334e68;
+  --navy-800: #243b53;
+  --navy-900: #102a43;
+  --navy-950: #0a1929;
+  --white: #ffffff;
+  --gray-50: #f8f9fa;
+  --gray-100: #f1f3f5;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --gray-600: #868e96;
+  --accent-blue: #3e8bff;
+  --accent-green: #51cf66;
+  --accent-red: #ff6b6b;
+  --accent-yellow: #fcc419;
+  --accent-purple: #9775fa;
+}
+
+/* Global Styles */
+Page {
+  background-color: var(--gray-50);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 15;
+  color: var(--navy-900);
+}
+
+ActionBar {
+  background-color: var(--navy-900);
+  color: var(--white);
+  font-size: 18;
+  font-weight: 600;
+}
+
+ActionBar Label {
+  color: var(--white);
+}
+
+/* Navigation Button */
+.nav-btn {
+  color: var(--white);
+  font-size: 14;
+  padding: 4 8;
+}
+
+/* Card Styles */
+.card {
+  background-color: var(--white);
+  border-radius: 12;
+  margin: 8 16;
+  padding: 16;
+  elevation: 2;
+  box-shadow: 0 1 3 rgba(0,0,0,0.08);
+}
+
+.card-hover {
+  animation: cardPress 150ms ease-out;
+}
+
+@keyframes cardPress {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.95; transform: scale(0.98); }
+}
+
+/* Thread Card */
+.thread-card {
+  background-color: var(--white);
+  border-radius: 12;
+  margin: 6 16;
+  padding: 14 16;
+  elevation: 1;
+}
+
+.thread-title {
+  font-size: 17;
+  font-weight: 600;
+  color: var(--navy-900);
+  margin-bottom: 6;
+}
+
+.thread-message {
+  font-size: 14;
+  color: var(--navy-600);
+  margin-bottom: 10;
+  line-height: 1.4;
+}
+
+.thread-meta {
+  font-size: 12;
+  color: var(--gray-500);
+}
+
+.thread-author {
+  font-weight: 600;
+  color: var(--navy-700);
+}
+
+/* Category Badge */
+.category-badge {
+  font-size: 11;
+  font-weight: 600;
+  color: var(--white);
+  background-color: var(--navy-700);
+  border-radius: 10;
+  padding: 2 10;
+}
+
+.category-question {
+  background-color: var(--accent-blue);
+}
+
+.category-idea {
+  background-color: var(--accent-green);
+}
+
+.category-announcement {
+  background-color: var(--accent-yellow);
+  color: var(--navy-900);
+}
+
+/* Reaction Styles */
+.reaction-bar {
+  margin-top: 8;
+}
+
+.reaction-btn {
+  font-size: 13;
+  color: var(--navy-600);
+  background-color: var(--navy-50);
+  border-radius: 16;
+  padding: 4 12;
+  margin-right: 6;
+  border-width: 1;
+  border-color: var(--navy-100);
+}
+
+.reaction-btn-active {
+  background-color: var(--navy-100);
+  border-color: var(--navy-300);
+  color: var(--navy-800);
+  font-weight: 600;
+}
+
+.reaction-count {
+  font-size: 12;
+  color: var(--navy-500);
+  margin-left: 4;
+}
+
+/* Comment Styles */
+.comment-item {
+  background-color: var(--white);
+  border-radius: 10;
+  padding: 12;
+  margin-bottom: 8;
+  border-width: 1;
+  border-color: var(--gray-200);
+}
+
+.comment-reply {
+  margin-left: 24;
+  border-left-width: 2;
+  border-left-color: var(--navy-200);
+  padding-left: 12;
+}
+
+.comment-author {
+  font-size: 13;
+  font-weight: 600;
+  color: var(--navy-800);
+}
+
+.comment-time {
+  font-size: 11;
+  color: var(--gray-400);
+  margin-left: 8;
+}
+
+.comment-text {
+  font-size: 14;
+  color: var(--navy-700);
+  margin-top: 4;
+  line-height: 1.4;
+}
+
+/* Input Styles */
+.input-field {
+  border-width: 1;
+  border-color: var(--navy-200);
+  border-radius: 10;
+  padding: 12 16;
+  font-size: 15;
+  background-color: var(--white);
+  color: var(--navy-900);
+  margin-bottom: 12;
+}
+
+.input-field:focus {
+  border-color: var(--navy-600);
+  border-width: 2;
+}
+
+.text-area {
+  border-width: 1;
+  border-color: var(--navy-200);
+  border-radius: 10;
+  padding: 12 16;
+  font-size: 15;
+  background-color: var(--white);
+  color: var(--navy-900);
+  margin-bottom: 12;
+  min-height: 100;
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: var(--navy-800);
+  color: var(--white);
+  border-radius: 10;
+  padding: 14 24;
+  font-size: 16;
+  font-weight: 600;
+  text-align: center;
+  elevation: 2;
+}
+
+.btn-primary:active {
+  background-color: var(--navy-900);
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  background-color: var(--white);
+  color: var(--navy-800);
+  border-width: 2;
+  border-color: var(--navy-800);
+  border-radius: 10;
+  padding: 12 24;
+  font-size: 16;
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn-danger {
+  background-color: var(--accent-red);
+  color: var(--white);
+  border-radius: 10;
+  padding: 12 24;
+  font-size: 16;
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn-small {
+  padding: 8 16;
+  font-size: 13;
+  border-radius: 8;
+}
+
+/* FAB */
+.fab {
+  width: 56;
+  height: 56;
+  border-radius: 28;
+  background-color: var(--navy-800);
+  color: var(--white);
+  font-size: 28;
+  text-align: center;
+  elevation: 6;
+  vertical-align: center;
+}
+
+/* Auth Screen */
+.auth-container {
+  background-color: var(--navy-900);
+  padding: 32 24;
+  border-radius: 16;
+  margin: 24 16;
+}
+
+.auth-title {
+  font-size: 28;
+  font-weight: 700;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 8;
+}
+
+.auth-subtitle {
+  font-size: 15;
+  color: var(--navy-300);
+  text-align: center;
+  margin-bottom: 24;
+}
+
+.auth-input {
+  border-width: 1;
+  border-color: var(--navy-600);
+  border-radius: 10;
+  padding: 14 16;
+  font-size: 15;
+  background-color: var(--navy-800);
+  color: var(--white);
+  margin-bottom: 12;
+}
+
+.auth-input::placeholder {
+  color: var(--navy-400);
+}
+
+.auth-btn {
+  background-color: var(--white);
+  color: var(--navy-900);
+  border-radius: 10;
+  padding: 14;
+  font-size: 16;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 8;
+}
+
+.auth-link {
+  color: var(--navy-300);
+  font-size: 14;
+  text-align: center;
+  margin-top: 16;
+}
+
+/* Profile */
+.profile-header {
+  background-color: var(--navy-900);
+  padding: 24;
+  border-radius: 0 0 24 24;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 80;
+  height: 80;
+  border-radius: 40;
+  background-color: var(--navy-700);
+  color: var(--white);
+  font-size: 32;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: center;
+  margin-bottom: 12;
+}
+
+.profile-name {
+  font-size: 22;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.profile-username {
+  font-size: 14;
+  color: var(--navy-300);
+}
+
+.profile-bio {
+  font-size: 14;
+  color: var(--navy-200);
+  margin-top: 8;
+}
+
+/* Tab Bar */
+.tab-bar {
+  background-color: var(--white);
+  border-top-width: 1;
+  border-top-color: var(--gray-200);
+  elevation: 8;
+}
+
+.tab-item {
+  font-size: 11;
+  color: var(--navy-400);
+  text-align: center;
+  padding: 8 0;
+}
+
+.tab-item-active {
+  color: var(--navy-800);
+  font-weight: 600;
+}
+
+/* Section Header */
+.section-header {
+  font-size: 13;
+  font-weight: 700;
+  color: var(--navy-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5;
+  margin: 16 16 8;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 48 24;
+}
+
+.empty-icon {
+  font-size: 48;
+  color: var(--navy-300);
+  text-align: center;
+  margin-bottom: 16;
+}
+
+.empty-title {
+  font-size: 18;
+  font-weight: 600;
+  color: var(--navy-700);
+  margin-bottom: 8;
+}
+
+.empty-text {
+  font-size: 14;
+  color: var(--navy-400);
+}
+
+/* Divider */
+.divider {
+  height: 1;
+  background-color: var(--gray-200);
+  margin: 8 0;
+}
+
+/* Loading */
+.loading-spinner {
+  color: var(--navy-600);
+  width: 40;
+  height: 40;
+}
+
+/* Badge */
+.badge {
+  background-color: var(--accent-red);
+  color: var(--white);
+  border-radius: 10;
+  font-size: 11;
+  font-weight: 700;
+  padding: 1 6;
+  min-width: 18;
+  text-align: center;
+}
+
+/* Scrollview */
+.scroll-content {
+  padding-bottom: 80;
+}
+
+/* Reply indicator */
+.reply-indicator {
+  font-size: 12;
+  color: var(--navy-500);
+  padding: 8 12;
+  background-color: var(--navy-50);
+  border-radius: 8;
+  margin: 4 0;
+}
+
+/* Category Filter Buttons */
+.category-filter-btn {
+  font-size: 13;
+  color: var(--navy-600);
+  background-color: var(--navy-50);
+  border-radius: 16;
+  padding: 6 16;
+  margin-right: 8;
+  border-width: 1;
+  border-color: var(--navy-100);
+}
+
+.category-filter-btn.active {
+  background-color: var(--navy-800);
+  color: var(--white);
+  border-color: var(--navy-800);
+  font-weight: 600;
+}
+
+/* Category Select Buttons (Create Thread) */
+.category-select-btn {
+  font-size: 12;
+  color: var(--navy-600);
+  background-color: var(--navy-50);
+  border-radius: 8;
+  padding: 8 4;
+  margin: 0 4;
+  border-width: 1;
+  border-color: var(--navy-100);
+  text-align: center;
+}
+
+.category-select-btn.active {
+  background-color: var(--navy-800);
+  color: var(--white);
+  border-color: var(--navy-800);
+  font-weight: 600;
+}
+
+/* Reply Bar */
+.reply-bar {
+  background-color: var(--white);
+  border-top-width: 1;
+  border-top-color: var(--gray-200);
+}
+
+/* Navy Bar (ActionBar) */
+.navy-bar {
+  background-color: var(--navy-900);
+}
+
+/* Thread List */
+.thread-list {
+  separator-color: transparent;
+  background-color: var(--gray-50);
+}
+
+/* Page background */
+.page {
+  background-color: var(--gray-50);
+}
+
+/* General background helpers */
+.bg-white {
+  background-color: var(--white);
+}

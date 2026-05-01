@@ -57,7 +57,6 @@ function renderThread() {
   time.text = formatTimeAgo(threadData.created_at);
   badge.text = threadData.category;
 
-  // Apply category style
   const catClass = `category-badge category-${threadData.category}`;
   badge.className = catClass;
 
@@ -101,7 +100,6 @@ function createCommentElement(comment, isReply) {
   const wrapper = new StackLayout();
   wrapper.className = isReply ? 'comment-item comment-reply' : 'comment-item';
 
-  // Author & Time row
   const header = new GridLayout();
   header.columns = 'auto, *, auto';
   header.rows = 'auto';
@@ -120,13 +118,11 @@ function createCommentElement(comment, isReply) {
   header.addChild(authorLabel);
   header.addChild(timeLabel);
 
-  // Comment text
   const textLabel = new Label();
   textLabel.text = comment.message;
   textLabel.className = 'comment-text';
   textLabel.textWrap = true;
 
-  // Reaction row
   const reactionRow = new StackLayout();
   reactionRow.orientation = 'horizontal';
   reactionRow.marginTop = '6';
@@ -149,7 +145,6 @@ function createCommentElement(comment, isReply) {
     reactionRow.addChild(btn);
   });
 
-  // Reply button
   const replyBtn = new Button();
   replyBtn.text = 'Reply';
   replyBtn.className = 'reaction-btn';
@@ -167,7 +162,6 @@ function createCommentElement(comment, isReply) {
   wrapper.addChild(textLabel);
   wrapper.addChild(reactionRow);
 
-  // Render nested replies
   if (comment.replies && comment.replies.length > 0) {
     comment.replies.forEach(reply => {
       const replyEl = createCommentElement(reply, true);
@@ -183,7 +177,6 @@ export async function onReact(args) {
   const type = btn.id.replace('react-', '');
   try {
     await toggleReaction(threadId, 'thread', type);
-    // Refresh reactions
     allReactions.thread = await fetchThreadReactions(threadId);
     updateReactionButtons();
   } catch (err) {
@@ -216,7 +209,6 @@ export async function onReply() {
     replyInput.hint = 'Write a comment...';
     replyInput._replyToCommentId = null;
 
-    // Refresh reactions
     const commentIds = allComments.map(c => c.id);
     allReactions.comments = await fetchCommentReactions(commentIds);
     renderComments();

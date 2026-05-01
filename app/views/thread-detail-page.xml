@@ -6,27 +6,20 @@
   <GridLayout rows="*, auto">
     <ScrollView row="0">
       <StackLayout class="screen-padding">
-        <!-- Thread Content -->
         <StackLayout id="threadContent" class="surface">
-          <!-- Category Badge -->
           <Label id="categoryBadge" text="" class="category-badge" textTransform="capitalize" margin-bottom="8" />
 
-          <!-- Title -->
           <Label id="threadTitle" text="" class="thread-title" textWrap="true" />
 
-          <!-- Author & Time -->
           <GridLayout columns="auto, *" rows="auto" margin-top="4" margin-bottom="12">
             <Label id="threadAuthor" col="0" text="" class="thread-author" font-size="13" />
             <Label id="threadTime" col="1" text="" class="thread-meta" margin-left="8" />
           </GridLayout>
 
-          <!-- Message -->
           <Label id="threadMessage" text="" class="thread-message" textWrap="true" font-size="15" />
 
-          <!-- Divider -->
           <StackLayout class="divider" margin-top="12" margin-bottom="8" />
 
-          <!-- Reactions Bar -->
           <GridLayout columns="auto, auto, auto, auto, *" rows="auto" id="reactionBar">
             <Button col="0" text="👍" tap="onReact" id="react-like" class="reaction-btn" />
             <Button col="1" text="❤️" tap="onReact" id="react-love" class="reaction-btn" />
@@ -35,7 +28,6 @@
           </GridLayout>
         </StackLayout>
 
-        <!-- Comments Section -->
         <Label text="Comments" class="section-header" margin-top="16" />
 
         <StackLayout id="commentsContainer" />
@@ -48,7 +40,6 @@
       </StackLayout>
     </ScrollView>
 
-    <!-- Reply Input Bar -->
     <GridLayout row="1" columns="*, auto" rows="auto" class="reply-bar" padding="8" backgroundColor="#ffffff" borderTopWidth="1" borderTopColor="#e9ecef">
       <TextView col="0" id="replyInput" hint="Write a comment..." class="input-field" margin-bottom="0" minHeight="40" maxHeight="100" />
       <Button col="1" text="Send" tap="onReply" class="btn-primary btn-small" margin-left="8" verticalAlignment="center" />

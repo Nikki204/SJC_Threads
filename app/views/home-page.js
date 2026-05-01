@@ -8,14 +8,7 @@ let currentCategory = 'all';
 export function onNavigatingTo(args) {
   const page = args.object;
   pageRef = page;
-  // Reuse existing bindingContext when navigating back,
-  // so ListView keeps the same ObservableArray instance.
   page.bindingContext = page.bindingContext || createViewModel();
-  // Refresh feed whenever we enter this page.
-  loadThreads();
-}
-
-export function onLoaded(args) {
   loadThreads();
 }
 
@@ -45,19 +38,21 @@ async function loadThreads() {
       ? threads
       : threads.filter(t => t.category === currentCategory);
 
-    const mapped = filtered.map(t => ({
-      id: t.id,
-      title: t.title,
-      messagePreview: t.message ? (t.message.length > 120 ? t.message.substring(0, 120) + '...' : t.message) : '',
-      category: t.category,
-      authorName: t.profiles?.display_name || t.profiles?.username || 'Unknown',
-      timeAgo: formatTimeAgo(t.updated_at || t.created_at),
-      commentCountText: `${t.comment_count || 0} replies`,
-      reactionText: `${Object.values(t.reaction_counts || {}).reduce((a, b) => a + b, 0)} reactions`,
-      _raw: t
-    }));
+    const mapped = filtered.map(t => {
+      const replies = t.comment_count || 0;
+      const reactions = Object.values(t.reaction_counts || {}).reduce((a, b) => a + b, 0);
+      return {
+        id: t.id,
+        title: t.title,
+        messagePreview: t.message ? (t.message.length > 120 ? t.message.substring(0, 120) + '...' : t.message) : '',
+        category: t.category,
+        authorName: t.profiles?.display_name || t.profiles?.username || 'Unknown',
+        timeAgo: formatTimeAgo(t.updated_at || t.created_at),
+        threadStats: `${replies} replies · ${reactions} reactions`,
+        _raw: t
+      };
+    });
 
-    // Update in-place so ListView reliably redraws.
     const arr = vm.threads;
     if (arr && typeof arr.splice === 'function') {
       arr.splice(0);
@@ -111,7 +106,6 @@ export function onFilterCategory(args) {
   const id = btn.id;
   const category = id.replace('filter-', '');
 
-  // Update button styles
   const page = args.object.page;
   const buttons = ['all', 'question', 'idea', 'announcement', 'general'];
   buttons.forEach(cat => {

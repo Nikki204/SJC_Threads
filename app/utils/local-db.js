@@ -15,29 +15,25 @@ function safeParseJson(text, fallback) {
 }
 
 function uuid() {
-  // Good-enough unique id for local-only data
   return `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
 }
 
-/** Shown as the first “announcement” thread — full app overview for new users. */
 export const WELCOME_THREAD_ID = 'thread_welcome_sjc';
 
 export function welcomeTourThreadBody() {
   return [
-    'Hey — thanks for checking out SJC Threads!',
+    'Welcome to SJC Threads.',
     '',
-    'Here’s what you can do in this app:',
+    'Quick tips:',
     '',
-    '• Feed — Scroll threads on Home. Filter by category (Questions, Ideas, Announcements, General). Tap any card to open it.',
-    '• Thread detail — Read the full post. React with 👍 ❤️ 💡 👏 on the thread.',
-    '• Comments — Leave a reply, reply to someone, and react on comments too.',
-    '• New thread — Use “Start a new thread…” or the + button.',
-    '• Profile — Tap Profile in the top bar (next to Logout) to open your profile.',
-    '• Local mode — Everything stays on this device (great for demos / class projects).',
+    '• Home feed — Browse threads and filter by category. Tap a card to open it.',
+    '• Thread — Read the full post and react with 👍 ❤️ 💡 👏.',
+    '• Comments — Reply to others and react on comments.',
+    '• New thread — Use “Start a new thread…” or the + button on Home.',
+    '• Profile — Open Profile from the top bar; Logout is there too.',
+    '• Privacy — Everything stays on this device (local demo mode).',
     '',
-    'Dig in: ask a question, share an idea, or say hi below.',
-    '',
-    ':DD'
+    'Say hi or ask a question in a new thread anytime.'
   ].join('\n');
 }
 
@@ -51,7 +47,7 @@ function migrateWelcomeThread(db) {
   if (idx === -1) return false;
 
   const t = threads[idx];
-  if (typeof t.message === 'string' && t.message.includes('Feed — Scroll threads')) {
+  if (typeof t.message === 'string' && t.message.includes('Home feed — Browse threads')) {
     return false;
   }
 
@@ -116,7 +112,6 @@ function fileExistsCompat(file) {
     if (typeof file.exists === 'function') return !!file.exists();
     if (typeof file.exists === 'boolean') return file.exists;
     if (typeof file.path === 'string') {
-      // If it has a path but no exists API, let readText determine existence
       return true;
     }
     return false;
@@ -152,7 +147,6 @@ export class LocalDb {
       return this._cache;
     }
 
-    // Basic shape repair (in case older file exists)
     parsed.meta ||= { version: 1, created_at: nowIso(), updated_at: nowIso() };
     parsed.users ||= [];
     parsed.profiles ||= [];
@@ -173,7 +167,6 @@ export class LocalDb {
     db.meta.updated_at = nowIso();
     this._cache = db;
 
-    // Serialize writes to avoid interleaving
     this._writePromise = this._writePromise.then(() =>
       this._file.writeText(JSON.stringify(db, null, 2))
     );

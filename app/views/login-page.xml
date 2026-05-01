@@ -4,7 +4,8 @@
       <StackLayout class="auth-container">
         <Image src="~/assets/sjc-logo.png" class="auth-logo" stretch="aspectFit" horizontalAlignment="center" loadMode="async" />
         <Label text="SJC Threads" class="auth-title" />
-        <Label text="St. John's College, Belize · Campus discussions (local mode)" class="auth-subtitle" textWrap="true" />
+        <Label text="St. John's College, Belize" class="auth-app-line" textWrap="true" horizontalAlignment="center" />
+        <Label text="Sign in to browse and post. Your data stays on this device." class="auth-subtitle" textWrap="true" />
 
         <TextField id="email" hint="Email" keyboardType="email" class="auth-input" autocorrect="false" autocapitalizationType="none" />
         <TextField id="password" hint="Password" secure="true" class="auth-input" />

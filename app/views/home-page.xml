@@ -1,21 +1,19 @@
-<Page navigatingTo="onNavigatingTo" loaded="onLoaded" class="page ns-light">
+<Page navigatingTo="onNavigatingTo" class="page ns-light">
   <ActionBar title="SJC Threads" class="navy-bar">
     <ActionItem text="Profile" tap="onGoToProfile" ios.position="left" android.position="actionBar" />
     <ActionItem text="Logout" tap="onLogout" ios.position="right" android.position="actionBar" />
   </ActionBar>
 
   <GridLayout rows="auto, auto, *, auto">
-    <!-- Welcome + Compose -->
     <StackLayout row="0" class="home-header">
       <Label text="{{ headerTitle }}" class="home-header-title" />
-      <Label text="Open the Welcome thread below for a quick tour :DD" class="home-header-subtitle" margin-top="2" textWrap="true" />
+      <Label text="Browse below. New here? Open the Welcome thread for a quick tour." class="home-header-subtitle" margin-top="6" textWrap="true" />
 
       <StackLayout class="compose-card">
         <Button text="Start a new thread…" tap="onNewThread" class="compose-btn" />
       </StackLayout>
     </StackLayout>
 
-    <!-- Category Filter -->
     <ScrollView row="1" orientation="horizontal" class="bg-white" padding="8">
       <StackLayout orientation="horizontal">
         <Button text="All" tap="onFilterCategory" class="category-filter-btn active" id="filter-all" />
@@ -26,43 +24,34 @@
       </StackLayout>
     </ScrollView>
 
-    <!-- Thread List -->
     <ListView row="2" items="{{ threads }}" itemTap="onThreadTap" class="thread-list" separatorColor="#e9ecef">
       <ListView.itemTemplate>
         <StackLayout class="thread-card" tap="onThreadTap">
-          <!-- Category & Time Row -->
           <GridLayout columns="auto, *, auto" rows="auto">
             <Label col="0" text="{{ category }}" class="category-badge" textTransform="capitalize" />
             <Label col="2" text="{{ timeAgo }}" class="thread-meta" />
           </GridLayout>
 
-          <!-- Title -->
           <Label text="{{ title }}" class="thread-title" textWrap="true" margin-top="8" />
 
-          <!-- Message Preview -->
           <Label text="{{ messagePreview }}" class="thread-message" textWrap="true" />
 
-          <!-- Author & Stats Row -->
-          <GridLayout columns="auto, *, auto, auto" rows="auto" margin-top="8">
+          <GridLayout columns="auto, *" rows="auto" margin-top="10">
             <Label col="0" text="{{ authorName }}" class="thread-author" font-size="13" />
-            <Label col="2" text="{{ commentCountText }}" class="thread-meta" margin-right="16" />
-            <Label col="3" text="{{ reactionText }}" class="thread-meta" />
+            <Label col="1" text="{{ threadStats }}" class="thread-meta" horizontalAlignment="right" />
           </GridLayout>
         </StackLayout>
       </ListView.itemTemplate>
     </ListView>
 
-    <!-- Empty State -->
     <StackLayout row="2" id="emptyState" visibility="collapsed" class="empty-state">
       <Label text="💬" class="empty-icon" />
       <Label text="No threads yet" class="empty-title" />
       <Label text="Be the first to start a discussion!" class="empty-text" />
     </StackLayout>
 
-    <!-- Loading -->
     <ActivityIndicator row="2" id="loading" busy="false" class="loading-spinner" />
 
-    <!-- FAB - New Thread -->
     <GridLayout row="3" rows="*" columns="*">
       <Button text="+" tap="onNewThread" class="fab" horizontalAlignment="right" verticalAlignment="bottom" margin="16" rowSpan="2" />
     </GridLayout>

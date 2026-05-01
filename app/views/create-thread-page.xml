@@ -10,7 +10,6 @@
         <Label text="Start a new discussion" class="title-md" margin-bottom="4" />
         <Label text="Pick a category and post your thread." class="subtitle" margin-bottom="16" />
 
-        <!-- Category Selection -->
         <Label text="Category" class="section-header" margin-bottom="8" />
         <GridLayout columns="*, *, *, *" rows="auto" margin-bottom="16">
           <Button col="0" text="Question" tap="onSelectCategory" id="cat-question" class="category-select-btn" />
@@ -19,15 +18,12 @@
           <Button col="3" text="General" tap="onSelectCategory" id="cat-general" class="category-select-btn active" />
         </GridLayout>
 
-        <!-- Title -->
         <Label text="Title" class="section-header" margin-bottom="4" />
         <TextField id="titleInput" hint="What's your thread about?" class="input-field" />
 
-        <!-- Message -->
         <Label text="Message" class="section-header" margin-bottom="4" />
         <TextView id="messageInput" hint="Share your thoughts, questions, or ideas..." class="text-area" />
 
-        <!-- Post Button -->
         <Button text="Post Thread" tap="onPost" class="btn-primary" margin-top="12" />
 
         <ActivityIndicator id="loading" busy="false" color="#627d98" margin-top="16" />

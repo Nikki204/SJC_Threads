@@ -4,13 +4,14 @@
       <StackLayout class="auth-container">
         <Image src="~/assets/sjc-logo.png" class="auth-logo" stretch="aspectFit" horizontalAlignment="center" loadMode="async" />
         <Label text="Create account" class="auth-title" />
-        <Label text="Join SJC Threads — everything stays on your device" class="auth-subtitle" textWrap="true" />
+        <Label text="St. John's College, Belize" class="auth-app-line" textWrap="true" horizontalAlignment="center" />
+        <Label text="Choose a display name and credentials. Stored locally on this phone." class="auth-subtitle" textWrap="true" />
 
-        <TextField id="displayName" hint="Display Name" class="auth-input" />
+        <TextField id="displayName" hint="Display name" class="auth-input" />
         <TextField id="username" hint="Username" class="auth-input" autocorrect="false" autocapitalizationType="none" />
         <TextField id="email" hint="Email" keyboardType="email" class="auth-input" autocorrect="false" autocapitalizationType="none" />
-        <TextField id="password" hint="Password (6+ chars)" secure="true" class="auth-input" />
-        <TextField id="confirmPassword" hint="Confirm Password" secure="true" class="auth-input" />
+        <TextField id="password" hint="Password (min. 6 characters)" secure="true" class="auth-input" />
+        <TextField id="confirmPassword" hint="Confirm password" secure="true" class="auth-input" />
 
         <Button text="Create Account" tap="{{ onRegister }}" class="auth-btn" />
         <Button text="Already have an account? Sign In" tap="{{ onGoToLogin }}" class="auth-secondary-btn" />

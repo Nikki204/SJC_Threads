@@ -8,7 +8,11 @@ let currentCategory = 'all';
 export function onNavigatingTo(args) {
   const page = args.object;
   pageRef = page;
-  page.bindingContext = createViewModel();
+  // Reuse existing bindingContext when navigating back,
+  // so ListView keeps the same ObservableArray instance.
+  page.bindingContext = page.bindingContext || createViewModel();
+  // Refresh feed whenever we enter this page.
+  loadThreads();
 }
 
 export function onLoaded(args) {
@@ -53,7 +57,14 @@ async function loadThreads() {
       _raw: t
     }));
 
-    vm.threads = new ObservableArray(mapped);
+    // Update in-place so ListView reliably redraws.
+    const arr = vm.threads;
+    if (arr && typeof arr.splice === 'function') {
+      arr.splice(0);
+      mapped.forEach(item => arr.push(item));
+    } else {
+      vm.threads = new ObservableArray(mapped);
+    }
 
     if (mapped.length === 0) {
       emptyState.visibility = 'visible';

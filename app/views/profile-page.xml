@@ -14,31 +14,34 @@
       </StackLayout>
 
       <!-- Edit Form -->
-      <StackLayout padding="16">
-        <Label text="EDIT PROFILE" class="section-header" margin-bottom="12" />
+      <StackLayout class="screen-padding">
+        <StackLayout class="surface">
+          <Label text="Edit profile" class="title-md" margin-bottom="4" />
+          <Label text="Update your public info (stored locally on this device)." class="subtitle" margin-bottom="16" />
 
-        <Label text="Display Name" font-size="13" color="#627d98" margin-bottom="4" />
-        <TextField id="editDisplayName" hint="Your display name" class="input-field" />
+          <Label text="Display Name" font-size="13" color="#627d98" margin-bottom="4" />
+          <TextField id="editDisplayName" hint="Your display name" class="input-field" />
 
-        <Label text="Username" font-size="13" color="#627d98" margin-bottom="4" />
-        <TextField id="editUsername" hint="Username" class="input-field" autocorrect="false" autocapitalizationType="none" />
+          <Label text="Username" font-size="13" color="#627d98" margin-bottom="4" />
+          <TextField id="editUsername" hint="Username" class="input-field" autocorrect="false" autocapitalizationType="none" />
 
-        <Label text="Bio" font-size="13" color="#627d98" margin-bottom="4" />
-        <TextView id="editBio" hint="Tell us about yourself" class="text-area" minHeight="80" />
+          <Label text="Bio" font-size="13" color="#627d98" margin-bottom="4" />
+          <TextView id="editBio" hint="Tell us about yourself" class="text-area" minHeight="80" />
 
-        <Button text="Save Changes" tap="onSave" class="btn-primary" margin-top="16" />
+          <Button text="Save Changes" tap="onSave" class="btn-primary" margin-top="12" />
 
-        <StackLayout class="divider" margin-top="24" margin-bottom="16" />
+          <StackLayout class="divider" margin-top="24" margin-bottom="16" />
 
-        <Label text="ACCOUNT" class="section-header" margin-bottom="12" />
-        <Label id="emailLabel" text="" font-size="14" color="#334e68" margin-bottom="8" />
-        <Label id="joinedLabel" text="" font-size="13" color="#868e96" margin-bottom="16" />
+          <Label text="Account" class="section-header" margin-bottom="12" />
+          <Label id="emailLabel" text="" font-size="14" color="#334e68" margin-bottom="8" />
+          <Label id="joinedLabel" text="" font-size="13" color="#868e96" margin-bottom="16" />
 
-        <Button text="Sign Out" tap="onSignOut" class="btn-danger btn-small" horizontalAlignment="left" />
+          <Button text="Sign Out" tap="onSignOut" class="btn-danger btn-small" horizontalAlignment="left" />
 
-        <ActivityIndicator id="loading" busy="false" color="#627d98" margin-top="16" />
-        <Label id="success" text="" color="#51cf66" font-size="13" margin-top="8" />
-        <Label id="error" text="" color="#ff6b6b" font-size="13" margin-top="8" />
+          <ActivityIndicator id="loading" busy="false" color="#627d98" margin-top="16" />
+          <Label id="success" text="" color="#51cf66" font-size="13" margin-top="8" />
+          <Label id="error" text="" color="#ff6b6b" font-size="13" margin-top="8" />
+        </StackLayout>
       </StackLayout>
     </StackLayout>
   </ScrollView>

@@ -5,9 +5,9 @@
 
   <GridLayout rows="*, auto">
     <ScrollView row="0">
-      <StackLayout>
+      <StackLayout class="screen-padding">
         <!-- Thread Content -->
-        <StackLayout id="threadContent" class="card" margin-top="8">
+        <StackLayout id="threadContent" class="surface">
           <!-- Category Badge -->
           <Label id="categoryBadge" text="" class="category-badge" textTransform="capitalize" margin-bottom="8" />
 
@@ -36,7 +36,7 @@
         </StackLayout>
 
         <!-- Comments Section -->
-        <Label text="COMMENTS" class="section-header" />
+        <Label text="Comments" class="section-header" margin-top="16" />
 
         <StackLayout id="commentsContainer" />
         <StackLayout id="noComments" visibility="collapsed" class="empty-state" padding="24">

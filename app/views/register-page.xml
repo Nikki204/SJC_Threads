@@ -1,8 +1,9 @@
 <Page navigatingTo="onNavigatingTo" class="page">
   <ScrollView>
     <StackLayout class="auth-container">
-      <Label text="Join SJC" class="auth-title" />
-      <Label text="Create your account" class="auth-subtitle" />
+      <Label text="SJC" class="brand-mark" horizontalAlignment="center" />
+      <Label text="Create account" class="auth-title" />
+      <Label text="Join the discussion in local mode" class="auth-subtitle" />
 
       <TextField id="displayName" hint="Display Name" class="auth-input" />
       <TextField id="username" hint="Username" class="auth-input" autocorrect="false" autocapitalizationType="none" />
@@ -11,7 +12,7 @@
       <TextField id="confirmPassword" hint="Confirm Password" secure="true" class="auth-input" />
 
       <Button text="Create Account" tap="onRegister" class="auth-btn" />
-      <Button text="Already have an account? Sign In" tap="onGoToLogin" style="background-color: transparent; color: #bcccdc; border-color: #bcccdc; border-width: 1; border-radius: 10; padding: 14; font-size: 14; text-align: center; margin-top: 8;" />
+      <Button text="Already have an account? Sign In" tap="onGoToLogin" class="auth-secondary-btn" />
 
       <ActivityIndicator id="loading" busy="false" color="#bcccdc" margin-top="16" />
       <Label id="error" text="" color="#ff6b6b" font-size="13" text-wrap="true" margin-top="8" text-align="center" />

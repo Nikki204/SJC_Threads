@@ -42,11 +42,8 @@ function createViewModel(page) {
       errorLabel.text = 'Enter your email to reset password';
       return;
     }
-    try {
-      const { error } = await authService.supabase?.auth?.resetPasswordForEmail?.(email);
-    } catch (e) {
-      // silently handle
-    }
+    const errorLabel = page.getViewById('error');
+    errorLabel.text = 'Local mode: password reset is not available.';
   };
 
   return vm;

@@ -1,6 +1,5 @@
 import { Frame } from '@nativescript/core';
 import { authService } from '../utils/auth';
-import { supabase } from '../utils/supabase';
 
 let pageRef = null;
 

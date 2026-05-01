@@ -1,166 +1,218 @@
-import { supabase } from './supabase';
 import { authService } from './auth';
+import { localDb } from './local-db';
 
 export async function fetchThreads() {
-  const { data, error } = await supabase
-    .from('threads')
-    .select(`
-      *,
-      profiles:author_id (username, display_name, avatar_url),
-      comments (id),
-      reactions (reaction_type)
-    `)
-    .order('updated_at', { ascending: false });
-  if (error) throw error;
+  const db = await localDb.load();
+  const threads = [...(db.threads || [])].sort((a, b) => {
+    const at = new Date(a.updated_at || a.created_at || 0).getTime();
+    const bt = new Date(b.updated_at || b.created_at || 0).getTime();
+    return bt - at;
+  });
 
-  return data.map(thread => ({
-    ...thread,
-    comment_count: thread.comments ? thread.comments.length : 0,
-    reaction_counts: countReactions(thread.reactions || [])
-  }));
+  return threads.map(t => {
+    const profile = (db.profiles || []).find(p => p.id === t.author_id) || null;
+    const comments = (db.comments || []).filter(c => c.thread_id === t.id);
+    const reactions = (db.reactions || []).filter(r => r.target_type === 'thread' && r.target_id === t.id);
+    return {
+      ...t,
+      profiles: profile ? {
+        username: profile.username,
+        display_name: profile.display_name,
+        avatar_url: profile.avatar_url
+      } : null,
+      comments,
+      reactions,
+      comment_count: comments.length,
+      reaction_counts: countReactions(reactions)
+    };
+  });
 }
 
 export async function fetchThreadById(threadId) {
-  const { data, error } = await supabase
-    .from('threads')
-    .select(`
-      *,
-      profiles:author_id (id, username, display_name, avatar_url)
-    `)
-    .eq('id', threadId)
-    .maybeSingle();
-  if (error) throw error;
-  return data;
+  const db = await localDb.load();
+  const thread = (db.threads || []).find(t => t.id === threadId) || null;
+  if (!thread) return null;
+  const profile = (db.profiles || []).find(p => p.id === thread.author_id) || null;
+  return {
+    ...thread,
+    profiles: profile ? {
+      id: profile.id,
+      username: profile.username,
+      display_name: profile.display_name,
+      avatar_url: profile.avatar_url
+    } : null
+  };
 }
 
 export async function fetchThreadReactions(threadId) {
-  const { data, error } = await supabase
-    .from('reactions')
-    .select('reaction_type, user_id')
-    .eq('target_id', threadId)
-    .eq('target_type', 'thread');
-  if (error) throw error;
-  return data;
+  const db = await localDb.load();
+  return (db.reactions || [])
+    .filter(r => r.target_type === 'thread' && r.target_id === threadId)
+    .map(r => ({ reaction_type: r.reaction_type, user_id: r.user_id }));
 }
 
 export async function fetchComments(threadId) {
-  const { data, error } = await supabase
-    .from('comments')
-    .select(`
-      *,
-      profiles:author_id (id, username, display_name, avatar_url)
-    `)
-    .eq('thread_id', threadId)
-    .order('created_at', { ascending: true });
-  if (error) throw error;
-  return data;
+  const db = await localDb.load();
+  const comments = (db.comments || [])
+    .filter(c => c.thread_id === threadId)
+    .sort((a, b) => new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime());
+
+  return comments.map(c => {
+    const profile = (db.profiles || []).find(p => p.id === c.author_id) || null;
+    return {
+      ...c,
+      profiles: profile ? {
+        id: profile.id,
+        username: profile.username,
+        display_name: profile.display_name,
+        avatar_url: profile.avatar_url
+      } : null
+    };
+  });
 }
 
 export async function fetchCommentReactions(commentIds) {
   if (!commentIds || commentIds.length === 0) return [];
-  const { data, error } = await supabase
-    .from('reactions')
-    .select('reaction_type, user_id, target_id')
-    .in('target_id', commentIds)
-    .eq('target_type', 'comment');
-  if (error) throw error;
-  return data;
+  const db = await localDb.load();
+  const set = new Set(commentIds);
+  return (db.reactions || [])
+    .filter(r => r.target_type === 'comment' && set.has(r.target_id))
+    .map(r => ({ reaction_type: r.reaction_type, user_id: r.user_id, target_id: r.target_id }));
 }
 
 export async function createThread(title, message, category) {
   const user = authService.currentUser;
   if (!user) throw new Error('Not logged in');
 
-  const { data, error } = await supabase
-    .from('threads')
-    .insert({
+  const created = await localDb.transaction(async (db, { uuid, nowIso }) => {
+    const ts = nowIso();
+    const thread = {
+      id: `thread_${uuid()}`,
       author_id: user.id,
       title,
       message,
-      category: category || 'general'
-    })
-    .select(`
-      *,
-      profiles:author_id (username, display_name, avatar_url)
-    `)
-    .maybeSingle();
-  if (error) throw error;
-  return data;
+      category: category || 'general',
+      created_at: ts,
+      updated_at: ts
+    };
+    db.threads.push(thread);
+    return thread;
+  });
+
+  const db = await localDb.load();
+  const profile = (db.profiles || []).find(p => p.id === user.id) || null;
+  return {
+    ...created,
+    profiles: profile ? {
+      username: profile.username,
+      display_name: profile.display_name,
+      avatar_url: profile.avatar_url
+    } : null
+  };
 }
 
 export async function createComment(threadId, message, parentCommentId) {
   const user = authService.currentUser;
   if (!user) throw new Error('Not logged in');
 
-  const insertData = {
-    thread_id: threadId,
-    author_id: user.id,
-    message
-  };
-  if (parentCommentId) {
-    insertData.parent_comment_id = parentCommentId;
-  }
+  const created = await localDb.transaction(async (db, { uuid, nowIso }) => {
+    const exists = (db.threads || []).some(t => t.id === threadId);
+    if (!exists) throw new Error('Thread not found');
 
-  const { data, error } = await supabase
-    .from('comments')
-    .insert(insertData)
-    .select(`
-      *,
-      profiles:author_id (id, username, display_name, avatar_url)
-    `)
-    .maybeSingle();
-  if (error) throw error;
-  return data;
+    const ts = nowIso();
+    const comment = {
+      id: `comment_${uuid()}`,
+      thread_id: threadId,
+      author_id: user.id,
+      message,
+      parent_comment_id: parentCommentId || null,
+      created_at: ts,
+      updated_at: ts
+    };
+    db.comments.push(comment);
+    return comment;
+  });
+
+  const db = await localDb.load();
+  const profile = (db.profiles || []).find(p => p.id === user.id) || null;
+  return {
+    ...created,
+    profiles: profile ? {
+      id: profile.id,
+      username: profile.username,
+      display_name: profile.display_name,
+      avatar_url: profile.avatar_url
+    } : null
+  };
 }
 
 export async function toggleReaction(targetId, targetType, reactionType) {
   const user = authService.currentUser;
   if (!user) throw new Error('Not logged in');
 
-  const { data: existing } = await supabase
-    .from('reactions')
-    .select('id')
-    .eq('user_id', user.id)
-    .eq('target_id', targetId)
-    .eq('target_type', targetType)
-    .eq('reaction_type', reactionType)
-    .maybeSingle();
-
-  if (existing) {
-    const { error } = await supabase
-      .from('reactions')
-      .delete()
-      .eq('id', existing.id);
-    if (error) throw error;
-    return { action: 'removed' };
-  } else {
-    const { error } = await supabase
-      .from('reactions')
-      .insert({
-        user_id: user.id,
-        target_id: targetId,
-        target_type: targetType,
-        reaction_type: reactionType
-      });
-    if (error) throw error;
-    return { action: 'added' };
+  if (targetType !== 'thread' && targetType !== 'comment') {
+    throw new Error('Invalid target type');
   }
+
+  return await localDb.transaction(async (db, { uuid, nowIso }) => {
+    const existingIdx = (db.reactions || []).findIndex(r =>
+      r.user_id === user.id &&
+      r.target_id === targetId &&
+      r.target_type === targetType &&
+      r.reaction_type === reactionType
+    );
+
+    if (existingIdx >= 0) {
+      db.reactions.splice(existingIdx, 1);
+      return { action: 'removed' };
+    }
+
+    const ts = nowIso();
+    db.reactions.push({
+      id: `reaction_${uuid()}`,
+      user_id: user.id,
+      target_id: targetId,
+      target_type: targetType,
+      reaction_type: reactionType,
+      created_at: ts
+    });
+    return { action: 'added' };
+  });
 }
 
 export async function deleteThread(threadId) {
-  const { error } = await supabase
-    .from('threads')
-    .delete()
-    .eq('id', threadId);
-  if (error) throw error;
+  await localDb.transaction(async (db) => {
+    const idx = (db.threads || []).findIndex(t => t.id === threadId);
+    if (idx < 0) return;
+    db.threads.splice(idx, 1);
+
+    const commentIds = new Set((db.comments || []).filter(c => c.thread_id === threadId).map(c => c.id));
+    db.comments = (db.comments || []).filter(c => c.thread_id !== threadId);
+    db.reactions = (db.reactions || []).filter(r => {
+      if (r.target_type === 'thread' && r.target_id === threadId) return false;
+      if (r.target_type === 'comment' && commentIds.has(r.target_id)) return false;
+      return true;
+    });
+  });
 }
 
 export async function deleteComment(commentId) {
-  const { error } = await supabase
-    .from('comments')
-    .delete()
-    .eq('id', commentId);
-  if (error) throw error;
+  await localDb.transaction(async (db) => {
+    const comments = db.comments || [];
+    const toDelete = new Set();
+    const stack = [commentId];
+    while (stack.length) {
+      const id = stack.pop();
+      if (toDelete.has(id)) continue;
+      toDelete.add(id);
+      comments.forEach(c => {
+        if (c.parent_comment_id === id) stack.push(c.id);
+      });
+    }
+
+    db.comments = comments.filter(c => !toDelete.has(c.id));
+    db.reactions = (db.reactions || []).filter(r => !(r.target_type === 'comment' && toDelete.has(r.target_id)));
+  });
 }
 
 function countReactions(reactions) {

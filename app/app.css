@@ -4,45 +4,59 @@
 
 
 
-/* Color System */
+/* Brand-first Color System (navy + clean whites) */
 :root {
-  --navy-50: #f0f4f8;
-  --navy-100: #d9e2ec;
-  --navy-200: #bcccdc;
-  --navy-300: #9fb3c8;
-  --navy-400: #829ab1;
-  --navy-500: #627d98;
-  --navy-600: #486581;
-  --navy-700: #334e68;
-  --navy-800: #243b53;
-  --navy-900: #102a43;
-  --navy-950: #0a1929;
+  /* Core */
   --white: #ffffff;
-  --gray-50: #f8f9fa;
-  --gray-100: #f1f3f5;
-  --gray-200: #e9ecef;
-  --gray-300: #dee2e6;
-  --gray-400: #ced4da;
-  --gray-500: #adb5bd;
-  --gray-600: #868e96;
-  --accent-blue: #3e8bff;
-  --accent-green: #51cf66;
-  --accent-red: #ff6b6b;
-  --accent-yellow: #fcc419;
-  --accent-purple: #9775fa;
+  --navy-950: #07162a;
+  --navy-900: #0b2140;
+  --navy-800: #12315f;
+  --navy-700: #1a4280;
+  --navy-600: #2a59a6;
+  --navy-200: #cfe1ff;
+  --navy-100: #e7f0ff;
+  --navy-50: #f3f7ff;
+
+  /* Surfaces */
+  --bg: #ffffff;
+  --bg-soft: #f6f9ff; /* very light blue, not gray */
+  --surface: #ffffff;
+  --border: #e2eaf8;
+
+  /* Text */
+  --text: #0b2140;
+  --text-muted: #4b6b99;
+  --text-faint: #6f86aa;
+
+  /* Accents */
+  --accent: #2f74ff;
+  --accent-2: #19b7ff;
+  --success: #18b37e;
+  --danger: #ff4d6d;
+  --warning: #ffb020;
 }
 
 /* Global Styles */
 Page {
-  background-color: var(--gray-50);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 15;
-  color: var(--navy-900);
+  color: var(--text);
+}
+
+/* Make buttons feel modern by default */
+Button {
+  text-transform: none;
+  font-weight: 700;
+}
+
+TextField, TextView {
+  font-size: 15;
 }
 
 /* Layout helpers */
 .screen {
-  background-color: var(--gray-50);
+  background-color: var(--bg);
 }
 
 .screen-padding {
@@ -50,38 +64,42 @@ Page {
 }
 
 .surface {
-  background-color: var(--white);
-  border-radius: 14;
+  background-color: var(--surface);
+  border-radius: 18;
   padding: 16;
   elevation: 2;
+  border-width: 1;
+  border-color: var(--border);
 }
 
 .surface-soft {
-  background-color: var(--white);
-  border-radius: 14;
+  background-color: var(--bg-soft);
+  border-radius: 18;
   padding: 16;
   elevation: 1;
+  border-width: 1;
+  border-color: var(--border);
 }
 
 .muted {
-  color: var(--navy-500);
+  color: var(--text-muted);
 }
 
 .title-lg {
   font-size: 26;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--navy-950);
 }
 
 .title-md {
   font-size: 18;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--navy-950);
 }
 
 .subtitle {
   font-size: 14;
-  color: var(--navy-400);
+  color: var(--text-faint);
 }
 
 /* Home header + compose card */
@@ -102,26 +120,25 @@ Page {
 }
 
 .compose-card {
-  background-color: var(--white);
-  border-radius: 16;
-  padding: 12;
+  background-color: rgba(255,255,255,0.10);
+  border-radius: 18;
+  padding: 10;
   margin-top: 14;
 }
 
 .compose-btn {
-  background-color: var(--navy-50);
-  color: var(--navy-700);
-  border-radius: 14;
+  background-color: var(--white);
+  color: var(--navy-900);
+  border-radius: 16;
   padding: 12 14;
   text-align: left;
   font-size: 14;
-  font-weight: 600;
-  border-width: 1;
-  border-color: var(--navy-100);
+  font-weight: 800;
+  border-width: 0;
 }
 
 .compose-btn:active {
-  background-color: var(--navy-100);
+  background-color: var(--navy-50);
 }
 
 ActionBar {
@@ -163,13 +180,13 @@ ActionBar Label {
 
 /* Thread Card */
 .thread-card {
-  background-color: var(--white);
-  border-radius: 14;
+  background-color: var(--surface);
+  border-radius: 18;
   margin: 6 16;
   padding: 14 16;
   elevation: 1;
   border-width: 1;
-  border-color: var(--gray-200);
+  border-color: var(--border);
 }
 
 .thread-title {
@@ -181,14 +198,14 @@ ActionBar Label {
 
 .thread-message {
   font-size: 14;
-  color: var(--navy-600);
+  color: var(--text-muted);
   margin-bottom: 10;
   line-height: 1.4;
 }
 
 .thread-meta {
   font-size: 12;
-  color: var(--gray-500);
+  color: var(--text-faint);
 }
 
 .thread-author {
@@ -201,22 +218,22 @@ ActionBar Label {
   font-size: 11;
   font-weight: 700;
   color: var(--white);
-  background-color: var(--navy-700);
+  background-color: var(--navy-800);
   border-radius: 999;
   padding: 2 10;
 }
 
 .category-question {
-  background-color: var(--accent-blue);
+  background-color: var(--accent);
 }
 
 .category-idea {
-  background-color: var(--accent-green);
+  background-color: var(--success);
 }
 
 .category-announcement {
-  background-color: var(--accent-yellow);
-  color: var(--navy-900);
+  background-color: var(--warning);
+  color: var(--navy-950);
 }
 
 /* Reaction Styles */
@@ -255,7 +272,7 @@ ActionBar Label {
   padding: 12;
   margin-bottom: 8;
   border-width: 1;
-  border-color: var(--gray-200);
+  border-color: var(--border);
 }
 
 .comment-reply {
@@ -268,18 +285,18 @@ ActionBar Label {
 .comment-author {
   font-size: 13;
   font-weight: 600;
-  color: var(--navy-800);
+  color: var(--navy-900);
 }
 
 .comment-time {
   font-size: 11;
-  color: var(--gray-400);
+  color: var(--text-faint);
   margin-left: 8;
 }
 
 .comment-text {
   font-size: 14;
-  color: var(--navy-700);
+  color: var(--text);
   margin-top: 4;
   line-height: 1.4;
 }
@@ -287,63 +304,63 @@ ActionBar Label {
 /* Input Styles */
 .input-field {
   border-width: 1;
-  border-color: var(--navy-200);
-  border-radius: 10;
-  padding: 12 16;
+  border-color: var(--border);
+  border-radius: 16;
+  padding: 12 14;
   font-size: 15;
   background-color: var(--white);
-  color: var(--navy-900);
+  color: var(--text);
   margin-bottom: 12;
 }
 
 .input-field:focus {
-  border-color: var(--navy-600);
+  border-color: var(--accent);
   border-width: 2;
 }
 
 .text-area {
   border-width: 1;
-  border-color: var(--navy-200);
-  border-radius: 10;
-  padding: 12 16;
+  border-color: var(--border);
+  border-radius: 16;
+  padding: 12 14;
   font-size: 15;
   background-color: var(--white);
-  color: var(--navy-900);
+  color: var(--text);
   margin-bottom: 12;
   min-height: 100;
 }
 
 /* Button Styles */
 .btn-primary {
-  background-color: var(--navy-800);
+  background-color: var(--navy-900);
   color: var(--white);
-  border-radius: 10;
-  padding: 14 24;
+  border-radius: 16;
+  padding: 14 20;
   font-size: 16;
-  font-weight: 600;
+  font-weight: 800;
   text-align: center;
   elevation: 2;
 }
 
 .btn-primary:active {
-  background-color: var(--navy-900);
+  background-color: var(--navy-800);
   opacity: 0.9;
 }
 
 .btn-secondary {
-  background-color: var(--white);
-  color: var(--navy-800);
-  border-width: 2;
-  border-color: var(--navy-800);
-  border-radius: 10;
-  padding: 12 24;
+  background-color: var(--bg-soft);
+  color: var(--navy-900);
+  border-width: 1;
+  border-color: var(--border);
+  border-radius: 16;
+  padding: 12 20;
   font-size: 16;
-  font-weight: 600;
+  font-weight: 800;
   text-align: center;
 }
 
 .btn-danger {
-  background-color: var(--accent-red);
+  background-color: var(--danger);
   color: var(--white);
   border-radius: 10;
   padding: 12 24;
@@ -363,7 +380,7 @@ ActionBar Label {
   width: 56;
   height: 56;
   border-radius: 28;
-  background-color: var(--navy-800);
+  background-color: var(--navy-900);
   color: var(--white);
   font-size: 28;
   text-align: center;
@@ -495,7 +512,7 @@ ActionBar Label {
 .tab-bar {
   background-color: var(--white);
   border-top-width: 1;
-  border-top-color: var(--gray-200);
+  border-top-color: var(--border);
   elevation: 8;
 }
 
@@ -549,7 +566,7 @@ ActionBar Label {
 /* Divider */
 .divider {
   height: 1;
-  background-color: var(--gray-200);
+  background-color: var(--border);
   margin: 8 0;
 }
 
@@ -562,7 +579,7 @@ ActionBar Label {
 
 /* Badge */
 .badge {
-  background-color: var(--accent-red);
+  background-color: var(--danger);
   color: var(--white);
   border-radius: 10;
   font-size: 11;
@@ -630,7 +647,7 @@ ActionBar Label {
 .reply-bar {
   background-color: var(--white);
   border-top-width: 1;
-  border-top-color: var(--gray-200);
+  border-top-color: var(--border);
 }
 
 /* Navy Bar (ActionBar) */
@@ -641,12 +658,12 @@ ActionBar Label {
 /* Thread List */
 .thread-list {
   separator-color: transparent;
-  background-color: var(--gray-50);
+  background-color: var(--bg);
 }
 
 /* Page background */
 .page {
-  background-color: var(--gray-50);
+  background-color: var(--bg);
 }
 
 /* General background helpers */

@@ -1,3 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
 /* Brand-first Color System (navy + clean whites) */
 :root {
   /* Core */

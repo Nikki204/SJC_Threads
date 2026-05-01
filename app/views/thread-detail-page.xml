@@ -28,10 +28,10 @@
 
           <!-- Reactions Bar -->
           <GridLayout columns="auto, auto, auto, auto, *" rows="auto" id="reactionBar">
-            <Button col="0" text="Like" tap="onReact" id="react-like" class="reaction-btn" />
-            <Button col="1" text="Love" tap="onReact" id="react-love" class="reaction-btn" />
-            <Button col="2" text="Idea" tap="onReact" id="react-idea" class="reaction-btn" />
-            <Button col="3" text="Clap" tap="onReact" id="react-clap" class="reaction-btn" />
+            <Button col="0" text="👍" tap="onReact" id="react-like" class="reaction-btn" />
+            <Button col="1" text="❤️" tap="onReact" id="react-love" class="reaction-btn" />
+            <Button col="2" text="💡" tap="onReact" id="react-idea" class="reaction-btn" />
+            <Button col="3" text="👏" tap="onReact" id="react-clap" class="reaction-btn" />
           </GridLayout>
         </StackLayout>
 

@@ -54,7 +54,7 @@
 
     <!-- Empty State -->
     <StackLayout row="2" id="emptyState" visibility="collapsed" class="empty-state">
-      <Label text="&#xf0e6;" class="empty-icon" />
+      <Label text="💬" class="empty-icon" />
       <Label text="No threads yet" class="empty-title" />
       <Label text="Be the first to start a discussion!" class="empty-text" />
     </StackLayout>

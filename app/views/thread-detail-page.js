@@ -67,7 +67,7 @@ function renderThread() {
 function updateReactionButtons() {
   const userId = authService.currentUser?.id;
   const reactionTypes = ['like', 'love', 'idea', 'clap'];
-  const emojis = { like: 'Like', love: 'Love', idea: 'Idea', clap: 'Clap' };
+  const emojis = { like: '👍', love: '❤️', idea: '💡', clap: '👏' };
 
   reactionTypes.forEach(type => {
     const btn = pageRef.getViewById(`react-${type}`);
@@ -134,12 +134,13 @@ function createCommentElement(comment, isReply) {
   const userId = authService.currentUser?.id;
   const commentReactions = allReactions.comments.filter(r => r.target_id === comment.id);
   const reactionTypes = ['like', 'love', 'idea', 'clap'];
+  const emojis = { like: '👍', love: '❤️', idea: '💡', clap: '👏' };
 
   reactionTypes.forEach(type => {
     const count = commentReactions.filter(r => r.reaction_type === type).length;
     const isActive = userId && commentReactions.some(r => r.reaction_type === type && r.user_id === userId);
     const btn = new Button();
-    btn.text = count > 0 ? `${type} ${count}` : type;
+    btn.text = count > 0 ? `${emojis[type]} ${count}` : emojis[type];
     btn.className = isActive ? 'reaction-btn reaction-btn-active' : 'reaction-btn';
     btn.style.fontSize = '11';
     btn.style.padding = '2 8';

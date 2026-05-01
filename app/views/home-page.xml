@@ -1,4 +1,4 @@
-<Page navigatingTo="onNavigatingTo" loaded="onLoaded" class="page">
+<Page navigatingTo="onNavigatingTo" loaded="onLoaded" class="page ns-light">
   <ActionBar title="SJC Threads" class="navy-bar">
     <NavigationButton text="Profile" icon="" tap="onGoToProfile" />
     <ActionItem text="Logout" tap="onLogout" ios.position="right" />

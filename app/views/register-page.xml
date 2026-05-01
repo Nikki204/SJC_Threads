@@ -1,4 +1,4 @@
-<Page navigatingTo="onNavigatingTo" class="page">
+<Page navigatingTo="onNavigatingTo" class="page ns-light">
   <ScrollView>
     <StackLayout class="auth-container">
       <Label text="SJC" class="brand-mark" horizontalAlignment="center" />

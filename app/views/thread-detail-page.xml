@@ -1,4 +1,4 @@
-<Page navigatingTo="onNavigatingTo" class="page">
+<Page navigatingTo="onNavigatingTo" class="page ns-light">
   <ActionBar title="Thread" class="navy-bar">
     <NavigationButton text="Back" tap="onBack" />
   </ActionBar>

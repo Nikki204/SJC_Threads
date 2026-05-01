@@ -1,4 +1,4 @@
-<Page navigatingTo="onNavigatingTo" class="page">
+<Page navigatingTo="onNavigatingTo" class="page ns-light">
   <ActionBar title="New Thread" class="navy-bar">
     <NavigationButton text="Cancel" tap="onCancel" />
     <ActionItem text="Post" tap="onPost" ios.position="right" />

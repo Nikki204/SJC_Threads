@@ -1,14 +1,14 @@
 <Page navigatingTo="onNavigatingTo" loaded="onLoaded" class="page ns-light">
   <ActionBar title="SJC Threads" class="navy-bar">
-    <NavigationButton text="Profile" icon="" tap="onGoToProfile" />
-    <ActionItem text="Logout" tap="onLogout" ios.position="right" />
+    <ActionItem text="Profile" tap="onGoToProfile" ios.position="left" android.position="actionBar" />
+    <ActionItem text="Logout" tap="onLogout" ios.position="right" android.position="actionBar" />
   </ActionBar>
 
   <GridLayout rows="auto, auto, *, auto">
     <!-- Welcome + Compose -->
     <StackLayout row="0" class="home-header">
       <Label text="{{ headerTitle }}" class="home-header-title" />
-      <Label text="Local mode • everything stays on your device" class="home-header-subtitle" margin-top="2" />
+      <Label text="Open the Welcome thread below for a quick tour :DD" class="home-header-subtitle" margin-top="2" textWrap="true" />
 
       <StackLayout class="compose-card">
         <Button text="Start a new thread…" tap="onNewThread" class="compose-btn" />

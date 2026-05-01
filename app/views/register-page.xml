@@ -1,21 +1,23 @@
-<Page navigatingTo="onNavigatingTo" class="page ns-light">
-  <ScrollView>
-    <StackLayout class="auth-container">
-      <Label text="SJC" class="brand-mark" horizontalAlignment="center" />
-      <Label text="Create account" class="auth-title" />
-      <Label text="Join the discussion in local mode" class="auth-subtitle" />
+<Page navigatingTo="onNavigatingTo" class="page ns-light auth-page">
+  <ScrollView class="auth-scroll">
+    <StackLayout class="auth-shell">
+      <StackLayout class="auth-container">
+        <Image src="~/assets/sjc-logo.png" class="auth-logo" stretch="aspectFit" horizontalAlignment="center" loadMode="async" />
+        <Label text="Create account" class="auth-title" />
+        <Label text="Join SJC Threads — everything stays on your device" class="auth-subtitle" textWrap="true" />
 
-      <TextField id="displayName" hint="Display Name" class="auth-input" />
-      <TextField id="username" hint="Username" class="auth-input" autocorrect="false" autocapitalizationType="none" />
-      <TextField id="email" hint="Email" keyboardType="email" class="auth-input" autocorrect="false" autocapitalizationType="none" />
-      <TextField id="password" hint="Password (6+ chars)" secure="true" class="auth-input" />
-      <TextField id="confirmPassword" hint="Confirm Password" secure="true" class="auth-input" />
+        <TextField id="displayName" hint="Display Name" class="auth-input" />
+        <TextField id="username" hint="Username" class="auth-input" autocorrect="false" autocapitalizationType="none" />
+        <TextField id="email" hint="Email" keyboardType="email" class="auth-input" autocorrect="false" autocapitalizationType="none" />
+        <TextField id="password" hint="Password (6+ chars)" secure="true" class="auth-input" />
+        <TextField id="confirmPassword" hint="Confirm Password" secure="true" class="auth-input" />
 
-      <Button text="Create Account" tap="{{ onRegister }}" class="auth-btn" />
-      <Button text="Already have an account? Sign In" tap="{{ onGoToLogin }}" class="auth-secondary-btn" />
+        <Button text="Create Account" tap="{{ onRegister }}" class="auth-btn" />
+        <Button text="Already have an account? Sign In" tap="{{ onGoToLogin }}" class="auth-secondary-btn" />
 
-      <ActivityIndicator id="loading" busy="false" color="#bcccdc" margin-top="16" />
-      <Label id="error" text="" color="#ff6b6b" font-size="13" text-wrap="true" margin-top="8" text-align="center" />
+        <ActivityIndicator id="loading" busy="false" color="#bcccdc" margin-top="16" />
+        <Label id="error" text="" color="#ff6b6b" font-size="13" text-wrap="true" margin-top="8" text-align="center" />
+      </StackLayout>
     </StackLayout>
   </ScrollView>
 </Page>

@@ -19,6 +19,49 @@ function uuid() {
   return `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
 }
 
+/** Shown as the first “announcement” thread — full app overview for new users. */
+export const WELCOME_THREAD_ID = 'thread_welcome_sjc';
+
+export function welcomeTourThreadBody() {
+  return [
+    'Hey — thanks for checking out SJC Threads!',
+    '',
+    'Here’s what you can do in this app:',
+    '',
+    '• Feed — Scroll threads on Home. Filter by category (Questions, Ideas, Announcements, General). Tap any card to open it.',
+    '• Thread detail — Read the full post. React with 👍 ❤️ 💡 👏 on the thread.',
+    '• Comments — Leave a reply, reply to someone, and react on comments too.',
+    '• New thread — Use “Start a new thread…” or the + button.',
+    '• Profile — Tap Profile in the top bar (next to Logout) to open your profile.',
+    '• Local mode — Everything stays on this device (great for demos / class projects).',
+    '',
+    'Dig in: ask a question, share an idea, or say hi below.',
+    '',
+    ':DD'
+  ].join('\n');
+}
+
+function migrateWelcomeThread(db) {
+  const threads = db.threads || [];
+  const legacyTitle = 'Welcome to SJC Threads';
+  const newTitle = 'Welcome to SJC Threads — app tour';
+  const body = welcomeTourThreadBody();
+
+  const idx = threads.findIndex(t => t.title === legacyTitle || t.title === newTitle);
+  if (idx === -1) return false;
+
+  const t = threads[idx];
+  if (typeof t.message === 'string' && t.message.includes('Feed — Scroll threads')) {
+    return false;
+  }
+
+  t.title = newTitle;
+  t.message = body;
+  t.category = 'announcement';
+  t.updated_at = nowIso();
+  return true;
+}
+
 function createSeedDb() {
   const createdAt = nowIso();
   const adminUserId = `user_${uuid()}`;
@@ -47,10 +90,10 @@ function createSeedDb() {
 
   const threads = [
     {
-      id: `thread_${uuid()}`,
+      id: WELCOME_THREAD_ID,
       author_id: adminUserId,
-      title: 'Welcome to SJC Threads',
-      message: 'This version stores everything locally on your device. Create a post, react, and reply—no database required.',
+      title: 'Welcome to SJC Threads — app tour',
+      message: welcomeTourThreadBody(),
       category: 'announcement',
       created_at: createdAt,
       updated_at: createdAt
@@ -116,6 +159,10 @@ export class LocalDb {
     parsed.threads ||= [];
     parsed.comments ||= [];
     parsed.reactions ||= [];
+
+    if (migrateWelcomeThread(parsed)) {
+      await this.save(parsed);
+    }
 
     this._cache = parsed;
     return this._cache;

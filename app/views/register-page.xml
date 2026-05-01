@@ -11,8 +11,8 @@
       <TextField id="password" hint="Password (6+ chars)" secure="true" class="auth-input" />
       <TextField id="confirmPassword" hint="Confirm Password" secure="true" class="auth-input" />
 
-      <Button text="Create Account" tap="onRegister" class="auth-btn" />
-      <Button text="Already have an account? Sign In" tap="onGoToLogin" class="auth-secondary-btn" />
+      <Button text="Create Account" tap="{{ onRegister }}" class="auth-btn" />
+      <Button text="Already have an account? Sign In" tap="{{ onGoToLogin }}" class="auth-secondary-btn" />
 
       <ActivityIndicator id="loading" busy="false" color="#bcccdc" margin-top="16" />
       <Label id="error" text="" color="#ff6b6b" font-size="13" text-wrap="true" margin-top="8" text-align="center" />

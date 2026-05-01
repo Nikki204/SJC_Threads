@@ -18,6 +18,11 @@ export function onLoaded(args) {
 function createViewModel() {
   const vm = new Observable();
   vm.threads = new ObservableArray();
+  const name =
+    authService.currentProfile?.display_name ||
+    authService.currentProfile?.username ||
+    'there';
+  vm.headerTitle = `Welcome, ${name}`;
   return vm;
 }
 

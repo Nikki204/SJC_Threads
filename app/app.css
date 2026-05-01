@@ -84,6 +84,46 @@ Page {
   color: var(--navy-400);
 }
 
+/* Home header + compose card */
+.home-header {
+  background-color: var(--navy-900);
+  padding: 18 16 16;
+}
+
+.home-header-title {
+  font-size: 22;
+  font-weight: 900;
+  color: var(--white);
+}
+
+.home-header-subtitle {
+  font-size: 13;
+  color: var(--navy-200);
+}
+
+.compose-card {
+  background-color: var(--white);
+  border-radius: 16;
+  padding: 12;
+  margin-top: 14;
+}
+
+.compose-btn {
+  background-color: var(--navy-50);
+  color: var(--navy-700);
+  border-radius: 14;
+  padding: 12 14;
+  text-align: left;
+  font-size: 14;
+  font-weight: 600;
+  border-width: 1;
+  border-color: var(--navy-100);
+}
+
+.compose-btn:active {
+  background-color: var(--navy-100);
+}
+
 ActionBar {
   background-color: var(--navy-900);
   color: var(--white);

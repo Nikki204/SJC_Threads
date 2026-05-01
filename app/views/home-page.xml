@@ -1,12 +1,22 @@
 <Page navigatingTo="onNavigatingTo" loaded="onLoaded" class="page">
-  <ActionBar title="SJC Forum" class="navy-bar">
+  <ActionBar title="SJC Threads" class="navy-bar">
     <NavigationButton text="Profile" icon="" tap="onGoToProfile" />
     <ActionItem text="Logout" tap="onLogout" ios.position="right" />
   </ActionBar>
 
-  <GridLayout rows="auto, *, auto">
+  <GridLayout rows="auto, auto, *, auto">
+    <!-- Welcome + Compose -->
+    <StackLayout row="0" class="home-header">
+      <Label text="{{ headerTitle }}" class="home-header-title" />
+      <Label text="Local mode • everything stays on your device" class="home-header-subtitle" margin-top="2" />
+
+      <StackLayout class="compose-card">
+        <Button text="Start a new thread…" tap="onNewThread" class="compose-btn" />
+      </StackLayout>
+    </StackLayout>
+
     <!-- Category Filter -->
-    <ScrollView row="0" orientation="horizontal" class="bg-white" padding="8">
+    <ScrollView row="1" orientation="horizontal" class="bg-white" padding="8">
       <StackLayout orientation="horizontal">
         <Button text="All" tap="onFilterCategory" class="category-filter-btn active" id="filter-all" />
         <Button text="Questions" tap="onFilterCategory" class="category-filter-btn" id="filter-question" />
@@ -17,7 +27,7 @@
     </ScrollView>
 
     <!-- Thread List -->
-    <ListView row="1" items="{{ threads }}" itemTap="onThreadTap" class="thread-list" separatorColor="#e9ecef">
+    <ListView row="2" items="{{ threads }}" itemTap="onThreadTap" class="thread-list" separatorColor="#e9ecef">
       <ListView.itemTemplate>
         <StackLayout class="thread-card" tap="onThreadTap">
           <!-- Category & Time Row -->
@@ -43,17 +53,17 @@
     </ListView>
 
     <!-- Empty State -->
-    <StackLayout row="1" id="emptyState" visibility="collapsed" class="empty-state">
+    <StackLayout row="2" id="emptyState" visibility="collapsed" class="empty-state">
       <Label text="&#xf0e6;" class="empty-icon" />
       <Label text="No threads yet" class="empty-title" />
       <Label text="Be the first to start a discussion!" class="empty-text" />
     </StackLayout>
 
     <!-- Loading -->
-    <ActivityIndicator row="1" id="loading" busy="false" class="loading-spinner" />
+    <ActivityIndicator row="2" id="loading" busy="false" class="loading-spinner" />
 
     <!-- FAB - New Thread -->
-    <GridLayout row="2" rows="*" columns="*">
+    <GridLayout row="3" rows="*" columns="*">
       <Button text="+" tap="onNewThread" class="fab" horizontalAlignment="right" verticalAlignment="bottom" margin="16" rowSpan="2" />
     </GridLayout>
   </GridLayout>

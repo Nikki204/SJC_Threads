@@ -67,6 +67,21 @@ function createSeedDb() {
   };
 }
 
+function fileExistsCompat(file) {
+  try {
+    if (!file) return false;
+    if (typeof file.exists === 'function') return !!file.exists();
+    if (typeof file.exists === 'boolean') return file.exists;
+    if (typeof file.path === 'string') {
+      // If it has a path but no exists API, let readText determine existence
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 export class LocalDb {
   constructor() {
     this._file = knownFolders.documents().getFile(DB_FILENAME);
@@ -76,15 +91,16 @@ export class LocalDb {
 
   async load() {
     if (this._cache) return this._cache;
-    const exists = await this._file.exists();
-    if (!exists) {
-      const seed = createSeedDb();
-      await this._file.writeText(JSON.stringify(seed, null, 2));
-      this._cache = seed;
-      return this._cache;
+    const exists = fileExistsCompat(this._file);
+    let text = '';
+    if (exists) {
+      try {
+        text = await this._file.readText();
+      } catch {
+        text = '';
+      }
     }
 
-    const text = await this._file.readText();
     const parsed = safeParseJson(text, null);
     if (!parsed || typeof parsed !== 'object') {
       const seed = createSeedDb();

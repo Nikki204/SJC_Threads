@@ -1,5 +1,5 @@
 import { File } from '@nativescript/core';
-import { fetchProfileByUserId } from '../utils/data';
+import { fetchProfileByUserId, fetchProfileSummary } from '../utils/data';
 import { resolveDocFilePath } from '../utils/media';
 
 export async function onShownModally(args) {
@@ -11,6 +11,9 @@ export async function onShownModally(args) {
   const username = page.getViewById('modalUsername');
   const bio = page.getViewById('modalBio');
   const joined = page.getViewById('modalJoined');
+  const threads = page.getViewById('modalThreadCount');
+  const comments = page.getViewById('modalCommentCount');
+  const reactions = page.getViewById('modalReactionCount');
 
   try {
     const profile = await fetchProfileByUserId(userId);
@@ -19,6 +22,9 @@ export async function onShownModally(args) {
       username.text = '';
       bio.text = 'This profile could not be loaded.';
       joined.text = '';
+      threads.text = '0';
+      comments.text = '0';
+      reactions.text = '0';
       initial.text = '?';
       img.visibility = 'collapsed';
       initial.visibility = 'visible';
@@ -40,13 +46,21 @@ export async function onShownModally(args) {
 
     displayName.text = profile.display_name || 'No name';
     username.text = `@${profile.username || 'user'}`;
-    bio.text = profile.bio || 'No bio yet.';
+    bio.text = profile.bio || 'No bio added yet.';
     const jd = new Date(profile.created_at);
     joined.text = `Joined ${jd.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+
+    const summary = await fetchProfileSummary(userId);
+    threads.text = String(summary.threadCount);
+    comments.text = String(summary.commentCount);
+    reactions.text = String(summary.reactionCount);
   } catch (e) {
     console.error(e);
     displayName.text = 'Profile';
     bio.text = 'Something went wrong loading this profile.';
+    threads.text = '0';
+    comments.text = '0';
+    reactions.text = '0';
   }
 }
 

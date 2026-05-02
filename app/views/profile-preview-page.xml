@@ -8,7 +8,12 @@
 
       <ScrollView>
         <StackLayout class="profile-modal-body">
-          <StackLayout horizontalAlignment="center" margin-bottom="16">
+          <GridLayout columns="*, auto" rows="auto" class="profile-modal-topbar">
+            <Label col="0" text="Profile" class="profile-modal-eyebrow" />
+            <Button col="1" text="X" tap="onClose" class="profile-modal-close" />
+          </GridLayout>
+
+          <StackLayout horizontalAlignment="center" margin-bottom="14">
             <GridLayout width="88" height="88" horizontalAlignment="center" class="profile-modal-avatar-wrap">
               <Image id="modalAvatarImage" width="88" height="88" class="profile-modal-avatar-img" stretch="aspectFill" visibility="collapsed" />
               <Label id="modalAvatarInitial" text="" class="profile-modal-avatar-fallback" />
@@ -17,10 +22,29 @@
 
           <Label id="modalDisplayName" text="" class="profile-modal-name" textWrap="true" horizontalAlignment="center" />
           <Label id="modalUsername" text="" class="profile-modal-username" horizontalAlignment="center" />
-          <Label id="modalBio" text="" textWrap="true" class="profile-modal-bio" margin-top="12" />
-          <Label id="modalJoined" text="" class="profile-modal-meta" margin-top="16" />
+          <GridLayout columns="*, *, *" rows="auto" class="profile-modal-stats" margin-top="16">
+            <StackLayout col="0" class="profile-modal-stat">
+              <Label id="modalThreadCount" text="0" class="profile-modal-stat-number" />
+              <Label text="Threads" class="profile-modal-stat-label" />
+            </StackLayout>
+            <StackLayout col="1" class="profile-modal-stat">
+              <Label id="modalCommentCount" text="0" class="profile-modal-stat-number" />
+              <Label text="Comments" class="profile-modal-stat-label" />
+            </StackLayout>
+            <StackLayout col="2" class="profile-modal-stat">
+              <Label id="modalReactionCount" text="0" class="profile-modal-stat-number" />
+              <Label text="Reactions" class="profile-modal-stat-label" />
+            </StackLayout>
+          </GridLayout>
 
-          <Button text="Close" tap="onClose" class="btn-secondary btn-small" margin-top="24" horizontalAlignment="stretch" />
+          <StackLayout class="profile-modal-bio-box" margin-top="16">
+            <Label text="About" class="profile-modal-section-label" />
+            <Label id="modalBio" text="" textWrap="true" class="profile-modal-bio" margin-top="6" />
+          </StackLayout>
+
+          <Label id="modalJoined" text="" class="profile-modal-meta" margin-top="14" />
+
+          <Button text="Close Profile" tap="onClose" class="btn-secondary btn-small profile-modal-primary-close" margin-top="20" horizontalAlignment="stretch" />
         </StackLayout>
       </ScrollView>
     </StackLayout>

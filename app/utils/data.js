@@ -58,6 +58,36 @@ export async function fetchProfileByUserId(userId) {
   return { ...profile };
 }
 
+export async function fetchProfileSummary(userId) {
+  if (!userId) {
+    return { threadCount: 0, commentCount: 0, reactionCount: 0 };
+  }
+
+  const db = await localDb.load();
+  const authoredThreadIds = new Set(
+    (db.threads || [])
+      .filter(t => t.author_id === userId)
+      .map(t => t.id)
+  );
+  const authoredCommentIds = new Set(
+    (db.comments || [])
+      .filter(c => c.author_id === userId)
+      .map(c => c.id)
+  );
+
+  const receivedReactions = (db.reactions || []).filter(r => {
+    if (r.target_type === 'thread') return authoredThreadIds.has(r.target_id);
+    if (r.target_type === 'comment') return authoredCommentIds.has(r.target_id);
+    return false;
+  });
+
+  return {
+    threadCount: authoredThreadIds.size,
+    commentCount: authoredCommentIds.size,
+    reactionCount: receivedReactions.length
+  };
+}
+
 export async function fetchThreadReactions(threadId) {
   const db = await localDb.load();
   return (db.reactions || [])

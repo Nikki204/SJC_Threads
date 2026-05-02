@@ -6,7 +6,17 @@
   <ScrollView>
     <StackLayout>
       <StackLayout class="profile-header">
-        <Label id="avatarInitial" text="" class="profile-avatar" horizontalAlignment="center" />
+        <GridLayout width="88" height="88" horizontalAlignment="center" margin-bottom="12" class="profile-avatar-wrap">
+          <Image id="avatarImage" width="88" height="88" class="profile-avatar-img" stretch="aspectFill" visibility="collapsed" />
+          <Label id="avatarInitial" text="" class="profile-avatar profile-avatar-fallback" horizontalAlignment="center" verticalAlignment="center" />
+        </GridLayout>
+
+        <StackLayout orientation="horizontal" horizontalAlignment="center" class="profile-photo-actions" margin-bottom="8">
+          <Button text="Gallery" tap="onPickGallery" class="btn-profile-photo" />
+          <Button text="Camera" tap="onTakePhoto" class="btn-profile-photo" margin-left="8" />
+          <Button text="Remove" tap="onRemoveAvatar" class="btn-profile-photo-outline" margin-left="8" />
+        </StackLayout>
+
         <Label id="displayName" text="" class="profile-name" />
         <Label id="username" text="" class="profile-username" />
         <Label id="bio" text="" class="profile-bio" textWrap="true" />

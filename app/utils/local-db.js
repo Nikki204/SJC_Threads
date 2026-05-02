@@ -37,6 +37,18 @@ export function welcomeTourThreadBody() {
   ].join('\n');
 }
 
+function migrateThreadImageUrls(db) {
+  const threads = db.threads || [];
+  let changed = false;
+  for (const t of threads) {
+    if (!Array.isArray(t.image_urls)) {
+      t.image_urls = [];
+      changed = true;
+    }
+  }
+  return changed;
+}
+
 function migrateWelcomeThread(db) {
   const threads = db.threads || [];
   const legacyTitle = 'Welcome to SJC Threads';
@@ -91,6 +103,7 @@ function createSeedDb() {
       title: 'Welcome to SJC Threads — app tour',
       message: welcomeTourThreadBody(),
       category: 'announcement',
+      image_urls: [],
       created_at: createdAt,
       updated_at: createdAt
     }
@@ -155,6 +168,10 @@ export class LocalDb {
     parsed.reactions ||= [];
 
     if (migrateWelcomeThread(parsed)) {
+      await this.save(parsed);
+    }
+
+    if (migrateThreadImageUrls(parsed)) {
       await this.save(parsed);
     }
 

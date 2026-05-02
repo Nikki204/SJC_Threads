@@ -1,5 +1,11 @@
-import { Frame } from '@nativescript/core';
+import { Frame, File, Dialogs } from '@nativescript/core';
 import { authService } from '../utils/auth';
+import {
+  pickAvatarFromGallery,
+  captureAvatarWithCamera,
+  resolveDocFilePath,
+  deleteFilesIfExist
+} from '../utils/media';
 
 let pageRef = null;
 
@@ -7,6 +13,20 @@ export function onNavigatingTo(args) {
   const page = args.object;
   pageRef = page;
   loadProfile();
+}
+
+function applyAvatarUi(profile) {
+  const avatarImg = pageRef.getViewById('avatarImage');
+  const avatarInitial = pageRef.getViewById('avatarInitial');
+  const path = profile?.avatar_url ? resolveDocFilePath(profile.avatar_url) : null;
+  if (path && File.exists(path)) {
+    avatarImg.src = path;
+    avatarImg.visibility = 'visible';
+    avatarInitial.visibility = 'collapsed';
+  } else {
+    avatarImg.visibility = 'collapsed';
+    avatarInitial.visibility = 'visible';
+  }
 }
 
 async function loadProfile() {
@@ -37,6 +57,62 @@ async function loadProfile() {
   emailLabel.text = `Email: ${user.email || 'N/A'}`;
   const joinDate = new Date(profile.created_at);
   joinedLabel.text = `Joined: ${joinDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+
+  applyAvatarUi(profile);
+}
+
+export async function onPickGallery() {
+  const user = authService.currentUser;
+  const prevRel = authService.currentProfile?.avatar_url || null;
+  if (!user) return;
+  try {
+    const rel = await pickAvatarFromGallery(user.id);
+    if (!rel) return;
+    await authService.updateProfile({ avatar_url: rel });
+    if (prevRel && prevRel !== rel) deleteFilesIfExist([prevRel]);
+    loadProfile();
+  } catch (err) {
+    Dialogs.alert({
+      title: 'Gallery',
+      message: err.message || 'Could not pick a photo.',
+      okButtonText: 'OK'
+    });
+  }
+}
+
+export async function onTakePhoto() {
+  const user = authService.currentUser;
+  const prevRel = authService.currentProfile?.avatar_url || null;
+  if (!user) return;
+  try {
+    const rel = await captureAvatarWithCamera(user.id);
+    if (!rel) return;
+    await authService.updateProfile({ avatar_url: rel });
+    if (prevRel && prevRel !== rel) deleteFilesIfExist([prevRel]);
+    loadProfile();
+  } catch (err) {
+    Dialogs.alert({
+      title: 'Camera',
+      message: err.message || 'Could not capture a photo.',
+      okButtonText: 'OK'
+    });
+  }
+}
+
+export async function onRemoveAvatar() {
+  const prevRel = authService.currentProfile?.avatar_url || null;
+  if (!prevRel) return;
+  try {
+    await authService.updateProfile({ avatar_url: null });
+    deleteFilesIfExist([prevRel]);
+    loadProfile();
+  } catch (err) {
+    Dialogs.alert({
+      title: 'Profile photo',
+      message: err.message || 'Could not remove photo.',
+      okButtonText: 'OK'
+    });
+  }
 }
 
 export async function onSave() {

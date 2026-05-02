@@ -1,6 +1,7 @@
 import { Observable, ObservableArray, Frame } from '@nativescript/core';
 import { authService } from '../utils/auth';
 import { fetchThreads, formatTimeAgo } from '../utils/data';
+import { resolveDocFilePath } from '../utils/media';
 
 let pageRef = null;
 let currentCategory = 'all';
@@ -41,6 +42,7 @@ async function loadThreads() {
     const mapped = filtered.map(t => {
       const replies = t.comment_count || 0;
       const reactions = Object.values(t.reaction_counts || {}).reduce((a, b) => a + b, 0);
+      const firstImg = (t.image_urls && t.image_urls.length) ? t.image_urls[0] : null;
       return {
         id: t.id,
         title: t.title,
@@ -49,6 +51,8 @@ async function loadThreads() {
         authorName: t.profiles?.display_name || t.profiles?.username || 'Unknown',
         timeAgo: formatTimeAgo(t.updated_at || t.created_at),
         threadStats: `${replies} replies · ${reactions} reactions`,
+        thumbSrc: firstImg ? resolveDocFilePath(firstImg) : '',
+        thumbVisibility: firstImg ? 'visible' : 'collapsed',
         _raw: t
       };
     });

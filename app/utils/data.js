@@ -1,5 +1,6 @@
 import { authService } from './auth';
 import { localDb } from './local-db';
+import { deleteFilesIfExist } from './media';
 
 export async function fetchThreads() {
   const db = await localDb.load();
@@ -15,7 +16,9 @@ export async function fetchThreads() {
     const reactions = (db.reactions || []).filter(r => r.target_type === 'thread' && r.target_id === t.id);
     return {
       ...t,
+      image_urls: Array.isArray(t.image_urls) ? t.image_urls : [],
       profiles: profile ? {
+        id: profile.id,
         username: profile.username,
         display_name: profile.display_name,
         avatar_url: profile.avatar_url
@@ -35,13 +38,24 @@ export async function fetchThreadById(threadId) {
   const profile = (db.profiles || []).find(p => p.id === thread.author_id) || null;
   return {
     ...thread,
+    image_urls: Array.isArray(thread.image_urls) ? thread.image_urls : [],
     profiles: profile ? {
       id: profile.id,
       username: profile.username,
       display_name: profile.display_name,
-      avatar_url: profile.avatar_url
+      avatar_url: profile.avatar_url,
+      bio: profile.bio,
+      created_at: profile.created_at
     } : null
   };
+}
+
+export async function fetchProfileByUserId(userId) {
+  if (!userId) return null;
+  const db = await localDb.load();
+  const profile = (db.profiles || []).find(p => p.id === userId) || null;
+  if (!profile) return null;
+  return { ...profile };
 }
 
 export async function fetchThreadReactions(threadId) {
@@ -80,9 +94,13 @@ export async function fetchCommentReactions(commentIds) {
     .map(r => ({ reaction_type: r.reaction_type, user_id: r.user_id, target_id: r.target_id }));
 }
 
-export async function createThread(title, message, category) {
+export async function createThread(title, message, category, imageRelativePaths) {
   const user = authService.currentUser;
   if (!user) throw new Error('Not logged in');
+
+  const images = Array.isArray(imageRelativePaths)
+    ? imageRelativePaths.filter(u => typeof u === 'string' && u.length > 0)
+    : [];
 
   const created = await localDb.transaction(async (db, { uuid, nowIso }) => {
     const ts = nowIso();
@@ -92,6 +110,7 @@ export async function createThread(title, message, category) {
       title,
       message,
       category: category || 'general',
+      image_urls: images,
       created_at: ts,
       updated_at: ts
     };
@@ -104,6 +123,7 @@ export async function createThread(title, message, category) {
   return {
     ...created,
     profiles: profile ? {
+      id: profile.id,
       username: profile.username,
       display_name: profile.display_name,
       avatar_url: profile.avatar_url
@@ -130,6 +150,8 @@ export async function createComment(threadId, message, parentCommentId) {
       updated_at: ts
     };
     db.comments.push(comment);
+    const thread = (db.threads || []).find(t => t.id === threadId);
+    if (thread) thread.updated_at = ts;
     return comment;
   });
 
@@ -162,12 +184,23 @@ export async function toggleReaction(targetId, targetType, reactionType) {
       r.reaction_type === reactionType
     );
 
+    const bumpThread = tid => {
+      const thread = (db.threads || []).find(t => t.id === tid);
+      if (thread) thread.updated_at = ts;
+    };
+
+    const ts = nowIso();
+
     if (existingIdx >= 0) {
       db.reactions.splice(existingIdx, 1);
+      if (targetType === 'thread') bumpThread(targetId);
+      else {
+        const comment = (db.comments || []).find(c => c.id === targetId);
+        if (comment) bumpThread(comment.thread_id);
+      }
       return { action: 'removed' };
     }
 
-    const ts = nowIso();
     db.reactions.push({
       id: `reaction_${uuid()}`,
       user_id: user.id,
@@ -176,14 +209,24 @@ export async function toggleReaction(targetId, targetType, reactionType) {
       reaction_type: reactionType,
       created_at: ts
     });
+    if (targetType === 'thread') bumpThread(targetId);
+    else {
+      const comment = (db.comments || []).find(c => c.id === targetId);
+      if (comment) bumpThread(comment.thread_id);
+    }
     return { action: 'added' };
   });
 }
 
 export async function deleteThread(threadId) {
+  let pathsToDelete = [];
   await localDb.transaction(async (db) => {
     const idx = (db.threads || []).findIndex(t => t.id === threadId);
     if (idx < 0) return;
+    const removed = db.threads[idx];
+    if (removed && Array.isArray(removed.image_urls)) {
+      pathsToDelete = removed.image_urls.slice();
+    }
     db.threads.splice(idx, 1);
 
     const commentIds = new Set((db.comments || []).filter(c => c.thread_id === threadId).map(c => c.id));
@@ -194,6 +237,7 @@ export async function deleteThread(threadId) {
       return true;
     });
   });
+  deleteFilesIfExist(pathsToDelete);
 }
 
 export async function deleteComment(commentId) {

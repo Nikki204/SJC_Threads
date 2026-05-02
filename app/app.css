@@ -716,3 +716,163 @@ ActionBar Label {
 .bg-white {
   background-color: var(--white);
 }
+
+
+.thread-card-thumb {
+  width: 100%;
+  height: 140;
+  border-radius: 14;
+  margin-bottom: 12;
+  background-color: var(--navy-50);
+}
+
+
+.profile-avatar-wrap {
+  horizontal-align: center;
+}
+
+.profile-avatar-img {
+  border-radius: 44;
+  border-width: 2;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.profile-avatar-fallback {
+  width: 88;
+  height: 88;
+  border-radius: 44;
+  margin-bottom: 0;
+}
+
+.profile-photo-actions {
+  horizontal-align: center;
+}
+
+.btn-profile-photo {
+  background-color: rgba(255, 255, 255, 0.18);
+  color: var(--white);
+  border-radius: 10;
+  padding: 8 14;
+  font-size: 13;
+  font-weight: 600;
+}
+
+.btn-profile-photo-outline {
+  background-color: transparent;
+  color: var(--navy-200);
+  border-width: 1;
+  border-color: rgba(255, 255, 255, 0.45);
+  border-radius: 10;
+  padding: 8 14;
+  font-size: 13;
+  font-weight: 600;
+}
+
+
+.profile-modal-page {
+  background-color: transparent;
+}
+
+.profile-modal-backdrop {
+  background-color: rgba(7, 22, 42, 0.55);
+}
+
+.profile-modal-handle-wrap {
+  padding: 8 0 4;
+}
+
+.profile-modal-handle {
+  width: 36;
+  height: 4;
+  border-radius: 2;
+  background-color: var(--border);
+}
+
+.profile-modal-sheet {
+  background-color: var(--white);
+  border-top-left-radius: 22;
+  border-top-right-radius: 22;
+  padding: 0 20 20;
+}
+
+.profile-modal-body {
+  padding-top: 8;
+}
+
+.profile-modal-avatar-wrap {
+  horizontal-align: center;
+}
+
+.profile-modal-avatar-img {
+  border-radius: 44;
+  border-width: 2;
+  border-color: var(--border);
+}
+
+.profile-modal-avatar-fallback {
+  width: 88;
+  height: 88;
+  border-radius: 44;
+  font-size: 32;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: center;
+  color: var(--white);
+  background-color: var(--navy-700);
+}
+
+.profile-modal-name {
+  font-size: 20;
+  font-weight: 800;
+  color: var(--navy-950);
+  text-align: center;
+}
+
+.profile-modal-username {
+  font-size: 14;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 4;
+}
+
+.profile-modal-bio {
+  font-size: 14;
+  color: var(--text);
+  line-height: 1.45;
+}
+
+.profile-modal-meta {
+  font-size: 13;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+
+.thread-author-row {
+  padding-top: 2;
+  padding-bottom: 2;
+}
+
+.thread-author-link {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.comment-author-link {
+  color: var(--accent);
+}
+
+
+.thread-attached-image {
+  border-radius: 14;
+  border-width: 1;
+  border-color: var(--border);
+  background-color: var(--navy-50);
+}
+
+
+.compose-attach-thumb {
+  border-radius: 10;
+  border-width: 1;
+  border-color: var(--border);
+}

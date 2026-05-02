@@ -1,10 +1,11 @@
-import { Frame, StackLayout, Label, GridLayout, Button, ActivityIndicator } from '@nativescript/core';
+import { Frame, StackLayout, Label, GridLayout, Button, ActivityIndicator, Image, File } from '@nativescript/core';
 import { authService } from '../utils/auth';
 import {
   fetchThreadById, fetchComments, fetchThreadReactions,
   fetchCommentReactions, createComment, toggleReaction,
   formatTimeAgo, buildCommentTree
 } from '../utils/data';
+import { resolveDocFilePath } from '../utils/media';
 
 let pageRef = null;
 let threadId = null;
@@ -60,7 +61,45 @@ function renderThread() {
   const catClass = `category-badge category-${threadData.category}`;
   badge.className = catClass;
 
+  renderThreadImages();
   updateReactionButtons();
+}
+
+function renderThreadImages() {
+  const container = pageRef.getViewById('threadImagesContainer');
+  container.removeChildren();
+
+  const urls = threadData.image_urls || [];
+  if (!urls.length) {
+    container.visibility = 'collapsed';
+    return;
+  }
+
+  container.visibility = 'visible';
+  urls.forEach(rel => {
+    const full = resolveDocFilePath(rel);
+    if (!full || !File.exists(full)) return;
+    const img = new Image();
+    img.src = full;
+    img.stretch = 'aspectFit';
+    img.className = 'thread-attached-image';
+    img.marginTop = 8;
+    container.addChild(img);
+  });
+}
+
+function openProfilePreview(userId) {
+  if (!userId || !pageRef) return;
+  pageRef.showModal('views/profile-preview-page', {
+    context: { userId },
+    fullscreen: false,
+    animated: true
+  });
+}
+
+export function onAuthorTap(args) {
+  const uid = threadData?.profiles?.id;
+  openProfilePreview(uid);
 }
 
 function updateReactionButtons() {
@@ -107,8 +146,9 @@ function createCommentElement(comment, isReply) {
 
   const authorLabel = new Label();
   authorLabel.text = comment.profiles?.display_name || comment.profiles?.username || 'Unknown';
-  authorLabel.className = 'comment-author';
+  authorLabel.className = 'comment-author comment-author-link';
   authorLabel.col = '0';
+  authorLabel.on('tap', () => openProfilePreview(comment.profiles?.id));
 
   const timeLabel = new Label();
   timeLabel.text = formatTimeAgo(comment.created_at);

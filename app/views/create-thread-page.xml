@@ -24,6 +24,15 @@
         <Label text="Message" class="section-header" margin-bottom="4" />
         <TextView id="messageInput" hint="Share your thoughts, questions, or ideas..." class="text-area" />
 
+        <Label text="Photos (optional, up to 4)" class="section-header" margin-top="12" margin-bottom="4" />
+        <StackLayout orientation="horizontal" margin-bottom="8">
+          <Button text="Add from gallery" tap="onAttachGallery" class="btn-secondary btn-small" />
+          <Button text="Take photo" tap="onAttachCamera" class="btn-secondary btn-small" margin-left="8" />
+        </StackLayout>
+        <ScrollView id="attachmentScroll" orientation="horizontal" height="80" visibility="collapsed" margin-bottom="8">
+          <StackLayout id="attachmentPreview" orientation="horizontal" padding="0" />
+        </ScrollView>
+
         <Button text="Post Thread" tap="onPost" class="btn-primary" margin-top="12" />
 
         <ActivityIndicator id="loading" busy="false" color="#627d98" margin-top="16" />

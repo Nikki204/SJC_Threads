@@ -27,6 +27,7 @@
     <ListView row="2" items="{{ threads }}" itemTap="onThreadTap" class="thread-list" separatorColor="#e9ecef">
       <ListView.itemTemplate>
         <StackLayout class="thread-card" tap="onThreadTap">
+          <Image src="{{ thumbSrc }}" class="thread-card-thumb" stretch="aspectFill" visibility="{{ thumbVisibility }}" />
           <GridLayout columns="auto, *, auto" rows="auto">
             <Label col="0" text="{{ category }}" class="category-badge" textTransform="capitalize" />
             <Label col="2" text="{{ timeAgo }}" class="thread-meta" />

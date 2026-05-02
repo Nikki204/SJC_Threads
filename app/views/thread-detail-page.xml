@@ -11,12 +11,14 @@
 
           <Label id="threadTitle" text="" class="thread-title" textWrap="true" />
 
-          <GridLayout columns="auto, *" rows="auto" margin-top="4" margin-bottom="12">
-            <Label id="threadAuthor" col="0" text="" class="thread-author" font-size="13" />
+          <GridLayout columns="auto, *" rows="auto" margin-top="4" margin-bottom="12" tap="onAuthorTap" class="thread-author-row">
+            <Label id="threadAuthor" col="0" text="" class="thread-author thread-author-link" font-size="13" />
             <Label id="threadTime" col="1" text="" class="thread-meta" margin-left="8" />
           </GridLayout>
 
           <Label id="threadMessage" text="" class="thread-message" textWrap="true" font-size="15" />
+
+          <StackLayout id="threadImagesContainer" margin-top="12" visibility="collapsed" />
 
           <StackLayout class="divider" margin-top="12" margin-bottom="8" />
 
